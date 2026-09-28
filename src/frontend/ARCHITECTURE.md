@@ -2,13 +2,14 @@
 
 ## Escopo do primeiro protótipo
 
-O frontend será um protótipo visual responsivo, priorizando celulares, com
-quatro experiências:
+O frontend é um protótipo visual responsivo, priorizando celulares, com cinco
+experiências principais:
 
 1. login;
 2. página inicial com acesso rápido à inspeção;
 3. captura ou envio da foto do material;
 4. resultado visual com os pontos de atenção da inspeção.
+5. histórico demonstrativo de peças analisadas.
 
 Nesta etapa não haverá autenticação real, envio de imagens, reconhecimento por
 IA nem integração com o backend. Os dados exibidos serão simulações locais.
@@ -22,8 +23,9 @@ IA nem integração com o backend. Os dados exibidos serão simulações locais.
 - **Lucide React**: ícones da interface.
 
 A direção visual é institucional e industrial, com superfícies claras, vermelho
-como cor de ação, cinza grafite para conteúdo e fotografia real. Não serão
-utilizadas cenas 3D nem animações decorativas.
+como cor de ação, cinza grafite para conteúdo e fotografia real. Animações de
+rolagem e elementos 3D leves complementam a experiência sem participar do
+fluxo funcional.
 
 Nenhuma biblioteca de estado global será adicionada no protótipo. Estado local
 e contexto de React são suficientes até existir integração real.
@@ -45,14 +47,16 @@ src/
     │   │   ├── login/          # entrada no produto
     │   │   ├── home/           # visão inicial e chamada para nova inspeção
     │   │   ├── scan/           # câmera/upload e estado de processamento
-    │   │   └── analysis/       # material identificado e pontos de atenção
+    │   │   ├── analysis/       # material identificado e pontos de atenção
+    │   │   └── history/        # inspeções anteriores demonstrativas
     │   ├── features/
     │   │   ├── authentication/ # formulário e sessão simulada
     │   │   ├── material-capture/ # experiência de captura ou envio
     │   │   └── inspection-results/ # marcações e recomendações da inspeção
     │   ├── components/
     │   │   ├── ui/             # botões, campos, cards e componentes básicos
-    │   │   └── feedback/       # loading, vazio, erro e mensagens de estado
+    │   │   ├── feedback/       # loading, vazio, erro e mensagens de estado
+    │   │   └── motion/         # animações e ambientação 3D
     │   ├── layouts/             # estruturas compartilhadas entre páginas
     │   ├── hooks/               # comportamento reutilizável de React
     │   ├── services/            # contrato isolado para a futura API
@@ -66,10 +70,11 @@ src/
 
 | Rota | Tela | Responsabilidade |
 | --- | --- | --- |
-| `/login` | Login | Apresentar a marca e permitir a entrada simulada. |
-| `/` | Início | Resumir a proposta e iniciar uma inspeção. |
+| `/` e `/login` | Login | Apresentar a marca e permitir a entrada simulada. |
+| `/home` | Início | Resumir a proposta e iniciar uma inspeção. |
 | `/scan` | Escanear | Capturar ou escolher uma foto do material. |
 | `/analysis` | Análise | Exibir o material reconhecido e os pontos de atenção. |
+| `/history` | Histórico | Consultar peças analisadas no conjunto demonstrativo. |
 
 ## Regras de organização
 
@@ -86,8 +91,8 @@ src/
 
 ## Estado da implementação
 
-As cinco partes do protótipo visual foram implementadas: fundação técnica,
-login, página inicial, captura e resultado da inspeção. O fluxo utiliza dados
-locais e demonstrativos, incluindo identificação de material, pontos de atenção,
-checklist e referências simuladas aos POPs. Nenhuma IA ou API real é executada
-nesta versão.
+As partes do protótipo visual foram implementadas: fundação técnica, login,
+página inicial, captura real pela câmera, upload, recorte local, resultado e
+histórico demonstrativos. O fluxo utiliza dados locais, incluindo identificação
+simulada de material, pontos de atenção, checklist e referências fictícias aos
+POPs. Nenhuma IA, persistência ou API real é executada nesta versão.
