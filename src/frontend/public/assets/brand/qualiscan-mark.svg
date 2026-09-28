@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title id="title">Símbolo QualiScan AI</title>
+  <path d="M8 21V8h13M43 8h13v13M56 43v13H43M21 56H8V43" fill="none" stroke="#A62115" stroke-width="3.5"/>
+  <circle cx="31" cy="30" r="13.5" fill="none" stroke="#27262A" stroke-width="5"/>
+  <path d="m40.5 40 10 10" fill="none" stroke="#A62115" stroke-width="5" stroke-linecap="square"/>
+  <path d="M18 30h26" fill="none" stroke="#A62115" stroke-width="2" stroke-linecap="square"/>
+</svg>

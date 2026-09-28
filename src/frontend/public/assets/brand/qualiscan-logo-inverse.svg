@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 286 64" role="img" aria-labelledby="title desc">
+  <title id="title">QualiScan AI</title>
+  <desc id="desc">Versão clara do símbolo de enquadramento e inspeção ao lado do nome QualiScan AI</desc>
+  <path d="M8 21V8h13M43 8h13v13M56 43v13H43M21 56H8V43" fill="none" stroke="#FF8A7F" stroke-width="3.5"/>
+  <circle cx="31" cy="30" r="13.5" fill="none" stroke="#fff" stroke-width="5"/>
+  <path d="m40.5 40 10 10" fill="none" stroke="#FF8A7F" stroke-width="5" stroke-linecap="square"/>
+  <path d="M18 30h26" fill="none" stroke="#FF8A7F" stroke-width="2" stroke-linecap="square"/>
+  <text x="76" y="41" fill="#fff" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="700" letter-spacing="-1.4">Quali</text>
+  <text x="145" y="41" fill="#FF9C92" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="700" letter-spacing="-1.4">Scan</text>
+  <rect x="225" y="16" width="32" height="32" fill="#A62115"/>
+  <path d="M229.5 39 236 22h4l6.5 17h-4l-1.3-3.7h-6.6l-1.3 3.7h-3.8Zm6.2-6.9h4.4l-2.2-6.2-2.2 6.2ZM250 22h4v17h-4z" fill="#fff"/>
+</svg>
