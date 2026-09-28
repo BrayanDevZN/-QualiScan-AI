@@ -28,7 +28,7 @@ export function AnalysisPage() {
   return (
     <AppShell>
       <AppHeader />
-      <main className="pb-20 pt-8 sm:pt-12">
+      <main className="bg-canvas/82 pb-20 pt-8 sm:pt-12">
         <Container>
           <div className="flex flex-wrap items-center justify-between gap-4">
             <Link className="inline-flex items-center gap-2 text-sm font-semibold text-ink-muted hover:text-brand" to="/scan">

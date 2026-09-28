@@ -80,7 +80,7 @@ export function HomePage() {
       <AppHeader />
 
       <main>
-        <section className="bg-white py-10 sm:py-14 lg:py-20">
+        <section className="bg-white/82 py-10 sm:py-14 lg:py-20">
           <Container>
             <div className="grid items-stretch gap-10 lg:grid-cols-[0.88fr_1.12fr] lg:gap-14 xl:gap-20">
               <Reveal className="flex flex-col justify-center py-4 lg:py-10">
@@ -133,7 +133,7 @@ export function HomePage() {
           </Container>
         </section>
 
-        <section className="scroll-mt-28 bg-white py-20 sm:py-28 lg:scroll-mt-20" id="como-funciona">
+        <section className="scroll-mt-36 bg-white/82 py-20 sm:py-28 lg:scroll-mt-24" id="como-funciona">
           <Container>
             <Reveal className="max-w-2xl">
               <Badge>Como funciona</Badge>
@@ -166,7 +166,7 @@ export function HomePage() {
           </Container>
         </section>
 
-        <section className="scroll-mt-28 border-y border-line bg-canvas py-20 sm:py-28 lg:scroll-mt-20" id="beneficios">
+        <section className="scroll-mt-36 border-y border-line bg-canvas/82 py-20 sm:py-28 lg:scroll-mt-24" id="beneficios">
           <Container>
             <div className="grid gap-12 lg:grid-cols-[0.72fr_1.28fr] lg:gap-20">
               <Reveal className="lg:sticky lg:top-10 lg:self-start">
@@ -193,7 +193,7 @@ export function HomePage() {
           </Container>
         </section>
 
-        <section className="bg-white py-20 sm:py-28">
+        <section className="bg-white/82 py-20 sm:py-28">
           <Container>
             <Reveal className="grid bg-brand text-white lg:grid-cols-[1fr_auto] lg:items-center">
               <div className="p-7 sm:p-10 lg:p-12">
@@ -211,7 +211,7 @@ export function HomePage() {
         </section>
       </main>
 
-      <footer className="border-t border-line bg-white py-7">
+      <footer className="border-t border-line bg-white/95 py-7">
         <Container>
           <Reveal className="flex flex-col gap-3 text-xs text-ink-subtle sm:flex-row sm:items-center sm:justify-between">
             <p>QualiScan AI · Protótipo visual</p>

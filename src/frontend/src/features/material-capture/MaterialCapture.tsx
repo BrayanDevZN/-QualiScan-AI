@@ -9,7 +9,7 @@ import {
   RotateCcw,
   Trash2,
 } from "lucide-react";
-import { type ChangeEvent, type PointerEvent as ReactPointerEvent, useRef, useState } from "react";
+import { type ChangeEvent, type PointerEvent as ReactPointerEvent, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { Button, Surface } from "@/components/ui";
@@ -42,8 +42,83 @@ export function MaterialCapture() {
   const [uploadError, setUploadError] = useState<string>();
   const [selection, setSelection] = useState<Selection>();
   const [selectionStart, setSelectionStart] = useState<SelectionPoint>();
+  const [cameraActive, setCameraActive] = useState(false);
   const uploadInput = useRef<HTMLInputElement>(null);
   const cameraInput = useRef<HTMLInputElement>(null);
+  const videoPreview = useRef<HTMLVideoElement>(null);
+  const cameraStream = useRef<MediaStream | undefined>(undefined);
+
+  useEffect(() => {
+    if (!cameraActive || !videoPreview.current || !cameraStream.current) return;
+    videoPreview.current.srcObject = cameraStream.current;
+    void videoPreview.current.play();
+  }, [cameraActive]);
+
+  useEffect(() => {
+    return () => cameraStream.current?.getTracks().forEach((track) => track.stop());
+  }, []);
+
+  function stopCamera() {
+    cameraStream.current?.getTracks().forEach((track) => track.stop());
+    cameraStream.current = undefined;
+    if (videoPreview.current) videoPreview.current.srcObject = null;
+    setCameraActive(false);
+  }
+
+  async function openCamera() {
+    setUploadError(undefined);
+
+    if (!navigator.mediaDevices?.getUserMedia) {
+      cameraInput.current?.click();
+      return;
+    }
+
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: false,
+        video: { facingMode: { ideal: "environment" } },
+      });
+      cameraStream.current = stream;
+      setCameraActive(true);
+    } catch (error) {
+      const errorName = error instanceof DOMException ? error.name : "";
+      if (errorName === "NotAllowedError") {
+        setUploadError("Permita o acesso à câmera no navegador para tirar a foto.");
+      } else if (errorName === "NotFoundError") {
+        setUploadError("Nenhuma câmera foi encontrada neste dispositivo.");
+      } else {
+        setUploadError("Não foi possível abrir a câmera. Tente selecionar uma imagem.");
+      }
+    }
+  }
+
+  function takePhoto() {
+    const video = videoPreview.current;
+    if (!video || video.videoWidth === 0 || video.videoHeight === 0) {
+      setUploadError("A câmera ainda está carregando. Aguarde um instante e tente novamente.");
+      return;
+    }
+
+    const canvas = document.createElement("canvas");
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    const context = canvas.getContext("2d");
+    if (!context) {
+      setUploadError("Não foi possível registrar a foto.");
+      return;
+    }
+
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    setImage({
+      fileName: `foto-${new Date().toISOString().replace(/[:.]/g, "-")}.jpg`,
+      fileSize: `${canvas.width} × ${canvas.height} px`,
+      src: canvas.toDataURL("image/jpeg", 0.92),
+    });
+    setSelection(undefined);
+    setUploadError(undefined);
+    setPhase("capture");
+    stopCamera();
+  }
 
   function selectFile(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
@@ -216,7 +291,38 @@ export function MaterialCapture() {
       <input accept="image/*" capture="environment" className="sr-only" onChange={selectFile} ref={cameraInput} type="file" />
       <input accept="image/*" className="sr-only" onChange={selectFile} ref={uploadInput} type="file" />
 
-      {!image ? (
+      {!image && cameraActive ? (
+        <div className="p-5 sm:p-8">
+          <div className="overflow-hidden border border-line bg-[#252529]">
+            <div className="relative grid min-h-[22rem] place-items-center sm:min-h-[30rem]">
+              <video
+                aria-label="Visualização ao vivo da câmera"
+                autoPlay
+                className="max-h-[30rem] w-full object-contain"
+                muted
+                playsInline
+                ref={videoPreview}
+              />
+              <div aria-hidden className="pointer-events-none absolute inset-5 border border-white/30" />
+              <p className="absolute left-1/2 top-5 -translate-x-1/2 bg-black/65 px-3 py-2 text-center text-xs font-semibold text-white">
+                Posicione toda a peça dentro do enquadramento
+              </p>
+            </div>
+            <div className="flex flex-col gap-4 border-t border-white/15 bg-[#252529] p-5 sm:flex-row sm:items-center sm:justify-between">
+              <p className="text-xs leading-5 text-white/70">A foto só será mantida nesta demonstração local.</p>
+              <div className="flex flex-col-reverse gap-2 sm:flex-row">
+                <Button className="border-white/50 bg-transparent text-white hover:bg-white/10" onClick={stopCamera} variant="secondary">
+                  Cancelar
+                </Button>
+                <Button className="border-white bg-white text-brand hover:bg-[#f2f2f0]" icon={<Camera aria-hidden className="size-4" />} onClick={takePhoto}>
+                  Tirar foto
+                </Button>
+              </div>
+            </div>
+          </div>
+          {uploadError && <p className="mt-3 text-xs font-semibold text-danger" role="alert">{uploadError}</p>}
+        </div>
+      ) : !image ? (
         <div className="p-5 sm:p-8">
           <div className="grid min-h-[27rem] place-items-center border border-line bg-surface-raised px-5 py-10 text-center">
             <div className="max-w-md">
@@ -229,7 +335,7 @@ export function MaterialCapture() {
               </p>
 
               <div className="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
-                <Button icon={<Camera aria-hidden className="size-4" />} onClick={() => cameraInput.current?.click()}>
+                <Button icon={<Camera aria-hidden className="size-4" />} onClick={openCamera}>
                   Abrir câmera
                 </Button>
                 <Button icon={<FileImage aria-hidden className="size-4" />} onClick={() => uploadInput.current?.click()} variant="secondary">

@@ -40,7 +40,7 @@ export function Button({
   return (
     <Component
       className={cn(
-        "inline-flex items-center justify-center gap-2 rounded-sm font-semibold focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-brand disabled:pointer-events-none disabled:opacity-50",
+        "inline-flex items-center justify-center gap-2 rounded-sm font-semibold shadow-[0_6px_16px_rgb(166_33_21/0.22)] transition-[background-color,border-color,color,box-shadow,transform] duration-200 hover:-translate-y-px hover:shadow-[0_9px_22px_rgb(166_33_21/0.3)] focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-brand active:translate-y-0 active:shadow-[0_3px_10px_rgb(166_33_21/0.2)] disabled:pointer-events-none disabled:translate-y-0 disabled:opacity-50 disabled:shadow-none",
         variants[variant],
         sizes[size],
         className,

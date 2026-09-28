@@ -55,7 +55,7 @@ export function HistoryPage() {
   return (
     <AppShell>
       <AppHeader />
-      <main className="pb-20 pt-8 sm:pt-12">
+      <main className="bg-canvas/82 pb-20 pt-8 sm:pt-12">
         <Container>
           <Link className="inline-flex items-center gap-2 text-sm font-semibold text-ink-muted hover:text-brand" to="/home">
             <ArrowLeft aria-hidden className="size-4" /> Voltar ao início

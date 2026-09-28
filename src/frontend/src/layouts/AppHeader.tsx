@@ -5,7 +5,7 @@ import { Brand, Button, Container } from "@/components/ui";
 
 export function AppHeader() {
   return (
-    <header className="border-b border-t-[3px] border-b-line border-t-brand bg-white">
+    <header className="sticky top-0 z-50 border-b border-t-[3px] border-b-line border-t-brand bg-white shadow-[0_6px_20px_rgb(39_38_42/0.06)]">
       <Container className="flex h-[4.875rem] items-center justify-between gap-5">
         <Link aria-label="QualiScan AI — início" className="focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand" to="/home">
           <Brand />
