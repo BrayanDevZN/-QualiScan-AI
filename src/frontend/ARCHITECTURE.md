@@ -20,7 +20,8 @@ IA nem integração com o backend. Os dados exibidos serão simulações locais.
 - **React + TypeScript**: interface e tipagem;
 - **React Router**: navegação entre as quatro telas;
 - **Tailwind CSS**: sistema visual responsivo e consistente;
-- **Lucide React**: ícones da interface.
+- **Lucide React**: ícones da interface;
+- **shadcn/ui** (`src/components/shadcn`): `Badge`, `Alert`, `Progress` e `Card`, ligados à paleta do QualiScan por tokens semânticos em `globals.css`.
 
 A direção visual é institucional e industrial, com superfícies claras, vermelho
 como cor de ação, cinza grafite para conteúdo e fotografia real. Animações de

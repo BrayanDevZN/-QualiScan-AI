@@ -1,6 +1,7 @@
-import { ArrowLeft, CheckCircle2 } from "lucide-react";
+import { AlertTriangle, ArrowLeft, CheckCircle2 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
+import { Alert, AlertDescription } from "@/components/shadcn/alert";
 import { Badge, Button, Container } from "@/components/ui";
 import { Reveal } from "@/components/motion/Reveal";
 import { InspectionResults } from "@/features/inspection-results/InspectionResults";
@@ -100,9 +101,12 @@ export function AnalysisPage() {
                 ))}
               </ol>
             </div>
-            <div className="mt-7 border-l-4 border-[#c78600] bg-[#fff5df] p-4 text-xs leading-5 text-[#6d4b08]">
-              Este protótipo não substitui avaliação técnica, requisitos de segurança ou o procedimento oficial vigente da empresa.
-            </div>
+            <Alert className="mt-7 text-xs leading-5" variant="warning">
+              <AlertTriangle aria-hidden />
+              <AlertDescription className="text-warning-text">
+                Este protótipo não substitui avaliação técnica, requisitos de segurança ou o procedimento oficial vigente da empresa.
+              </AlertDescription>
+            </Alert>
           </section>
           </Reveal>
         </Container>

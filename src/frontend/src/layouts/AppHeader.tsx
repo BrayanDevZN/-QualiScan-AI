@@ -1,19 +1,29 @@
 import { LogOut, ScanLine } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { Brand, Button, Container } from "@/components/ui";
 
 export function AppHeader() {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const update = () => setScrolled(window.scrollY > 8);
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    return () => window.removeEventListener("scroll", update);
+  }, []);
+
   return (
-    <header className="sticky top-0 z-50 border-b border-t-[3px] border-b-line border-t-brand bg-white shadow-[0_6px_20px_rgb(39_38_42/0.06)]">
+    <header data-scrolled={scrolled} className="app-header sticky top-0 z-50 border-b border-t-[3px] border-b-line border-t-brand bg-white shadow-[0_6px_20px_rgb(39_38_42/0.06)]">
       <Container className="flex h-[4.875rem] items-center justify-between gap-5">
         <Link aria-label="QualiScan AI — início" className="focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand" to="/home">
           <Brand />
         </Link>
         <nav aria-label="Navegação principal" className="hidden items-center gap-8 lg:flex">
-          <Link className="text-sm font-medium text-ink-muted hover:text-brand" to="/home#como-funciona">Como funciona</Link>
-          <Link className="text-sm font-medium text-ink-muted hover:text-brand" to="/home#beneficios">Benefícios</Link>
-          <Link className="text-sm font-medium text-ink-muted hover:text-brand" to="/history">Análises</Link>
+          <Link className="nav-link text-sm font-medium text-ink-muted hover:text-brand" to="/home#como-funciona">Como funciona</Link>
+          <Link className="nav-link text-sm font-medium text-ink-muted hover:text-brand" to="/home#beneficios">Benefícios</Link>
+          <Link className="nav-link text-sm font-medium text-ink-muted hover:text-brand" to="/history">Análises</Link>
         </nav>
         <div className="flex items-center gap-2">
           <Button asChild className="hidden sm:inline-flex" icon={<ScanLine aria-hidden className="size-4" />} size="sm">

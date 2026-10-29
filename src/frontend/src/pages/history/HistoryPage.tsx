@@ -2,7 +2,8 @@ import { ArrowLeft, CalendarDays, ChevronRight, Search } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 
-import { Badge, Button, Container } from "@/components/ui";
+import { Badge as SectionLabel, Button, Container } from "@/components/ui";
+import { Badge } from "@/components/shadcn/badge";
 import { Reveal } from "@/components/motion/Reveal";
 import { AppHeader } from "@/layouts/AppHeader";
 import { AppShell } from "@/layouts/AppShell";
@@ -14,7 +15,7 @@ const inspections = [
     material: "Motor elétrico industrial",
     points: "3 pontos verificados",
     status: "Requer atenção",
-    statusClass: "bg-[#f8e4e1] text-brand",
+    statusVariant: "attention" as const,
   },
   {
     code: "MV-V11",
@@ -22,7 +23,7 @@ const inspections = [
     material: "Motoventilador V11",
     points: "2 pontos verificados",
     status: "Concluída",
-    statusClass: "bg-[#e8f2ec] text-success",
+    statusVariant: "success" as const,
   },
   {
     code: "CE-0317",
@@ -30,7 +31,7 @@ const inspections = [
     material: "Carcaça de motor elétrico",
     points: "4 pontos verificados",
     status: "Concluída",
-    statusClass: "bg-[#e8f2ec] text-success",
+    statusVariant: "success" as const,
   },
   {
     code: "EX-0209",
@@ -38,7 +39,7 @@ const inspections = [
     material: "Conjunto de eixo e acoplamento",
     points: "3 pontos verificados",
     status: "Requer atenção",
-    statusClass: "bg-[#f8e4e1] text-brand",
+    statusVariant: "attention" as const,
   },
 ];
 
@@ -63,7 +64,7 @@ export function HistoryPage() {
 
           <Reveal className="mt-8 grid gap-7 border-b border-line pb-8 lg:grid-cols-[1fr_22rem] lg:items-end">
             <div>
-              <Badge>Histórico de inspeções</Badge>
+              <SectionLabel>Histórico de inspeções</SectionLabel>
               <h1 className="mt-5 text-4xl font-bold tracking-[-0.045em] text-ink sm:text-5xl">Peças já analisadas</h1>
               <p className="mt-3 max-w-2xl text-base leading-7 text-ink-muted">
                 Consulte as verificações recentes e retome os resultados registrados para cada material.
@@ -91,8 +92,8 @@ export function HistoryPage() {
           </Reveal>
 
           <section aria-label="Lista de peças analisadas" className="mt-5 border-t border-line-strong">
-            {visibleInspections.map(({ code, date, material, points, status, statusClass }) => (
-              <article className="border-b border-line-strong bg-white" key={code}>
+            {visibleInspections.map(({ code, date, material, points, status, statusVariant }) => (
+              <article className="history-row border-b border-line-strong bg-white" key={code}>
                 <Reveal className="grid gap-5 px-5 py-6 sm:px-6 lg:grid-cols-[5rem_minmax(0,1.4fr)_minmax(10rem,0.7fr)_minmax(9rem,0.6fr)_auto] lg:items-center">
                 <div className="relative aspect-square overflow-hidden bg-surface-overlay">
                   <img
@@ -113,9 +114,7 @@ export function HistoryPage() {
                 </p>
 
                 <div>
-                  <span className={`inline-flex px-2.5 py-1 text-[0.68rem] font-bold uppercase tracking-[0.08em] ${statusClass}`}>
-                    {status}
-                  </span>
+                  <Badge variant={statusVariant}>{status}</Badge>
                 </div>
 
                 <Button asChild icon={<ChevronRight aria-hidden className="size-4" />} size="sm" variant="secondary">

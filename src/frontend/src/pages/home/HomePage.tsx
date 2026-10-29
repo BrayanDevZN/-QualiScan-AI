@@ -85,13 +85,13 @@ export function HomePage() {
             <div className="grid items-stretch gap-10 lg:grid-cols-[0.88fr_1.12fr] lg:gap-14 xl:gap-20">
               <Reveal className="flex flex-col justify-center py-4 lg:py-10">
                 <Badge>Inspeção orientada por informação</Badge>
-                <h1 className="mt-7 max-w-xl text-balance text-[clamp(2.7rem,5vw,4.75rem)] font-bold leading-[1.02] tracking-[-0.05em] text-ink">
+                <h1 className="hero-in mt-7 max-w-xl text-balance text-[clamp(2.7rem,5vw,4.75rem)] font-bold leading-[1.02] tracking-[-0.05em] text-ink">
                   Veja o que exige <span className="text-brand">atenção.</span>
                 </h1>
-                <p className="mt-7 max-w-lg border-l border-line-strong pl-5 text-base leading-7 text-ink-muted sm:text-lg sm:leading-8">
+                <p className="hero-in mt-7 max-w-lg border-l border-line-strong pl-5 text-base leading-7 text-ink-muted sm:text-lg sm:leading-8">
                   Fotografe o material e encontre os pontos importantes da inspeção com apoio dos procedimentos da sua operação.
                 </p>
-                <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+                <div className="hero-in mt-9 flex flex-col gap-3 sm:flex-row">
                   <Button asChild icon={<ArrowRight aria-hidden className="size-4" />} size="lg">
                     <Link to="/scan">Iniciar uma inspeção</Link>
                   </Button>
@@ -143,7 +143,7 @@ export function HomePage() {
 
             <ol className="mt-12 border-y border-line">
               {workflow.map(({ description, details, number, result, title }) => (
-                <li className="border-b border-line last:border-b-0" key={title}>
+                <li className="step-row border-b border-line last:border-b-0" key={title}>
                   <Reveal className="grid gap-4 py-7 sm:grid-cols-[4rem_15rem_1fr] sm:items-start sm:gap-6 lg:grid-cols-[6rem_19rem_1fr] lg:py-9" delay={Number(number) * 45}>
                     <span className="font-mono text-sm font-bold text-brand">{number}</span>
                     <h3 className="text-xl font-bold tracking-[-0.025em] text-ink">{title}</h3>
@@ -177,7 +177,7 @@ export function HomePage() {
               </Reveal>
               <div className="border-t border-line-strong">
                 {benefits.map(({ description, number, outcome, title }) => (
-                  <article className="border-b border-line-strong" key={title}>
+                  <article className="step-row border-b border-line-strong" key={title}>
                     <Reveal className="grid gap-3 py-6 sm:grid-cols-[3rem_12rem_1fr] sm:gap-5 sm:py-8" delay={Number(number) * 55}>
                       <span className="font-mono text-xs font-bold text-brand">{number}</span>
                       <h3 className="text-lg font-bold text-ink">{title}</h3>
