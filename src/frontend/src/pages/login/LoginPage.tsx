@@ -13,6 +13,8 @@ export function LoginPage() {
         />
         <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-[#27262a]/95 via-[#27262a]/62 to-[#27262a]/10 lg:bg-gradient-to-t lg:from-[#27262a]/95 lg:via-[#27262a]/35 lg:to-transparent" />
 
+        <div aria-hidden className="absolute inset-x-0 top-0 h-44 bg-gradient-to-b from-black/90 via-black/55 to-transparent sm:h-56" />
+
         <div className="relative z-10 flex min-h-[18rem] flex-col p-5 sm:p-8 lg:min-h-dvh lg:p-12 xl:p-16">
           <Brand inverse />
 
