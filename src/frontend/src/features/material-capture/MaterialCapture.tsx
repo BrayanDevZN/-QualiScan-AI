@@ -253,16 +253,18 @@ export function MaterialCapture() {
 
   if (phase === "submitted" && image) {
     return (
-      <Surface className="overflow-hidden">
+      <Surface className="overflow-hidden border-t-4 border-t-success">
         <div className="grid md:grid-cols-[15rem_1fr]">
           <div className="min-h-52 bg-surface-overlay">
             <img alt="Material selecionado para análise" className="size-full object-contain" src={image.src} />
           </div>
           <div className="p-6 sm:p-8">
-            <CheckCircle2 aria-hidden className="size-9 text-success" />
-            <p className="mt-4 text-base font-semibold text-success">Imagem recebida</p>
-            <h2 className="mt-2 text-3xl font-bold tracking-[-0.03em] text-ink">Material pronto para análise</h2>
-            <p className="mt-3 max-w-xl text-base leading-7 text-ink-muted">
+            <span className="inline-flex border-b-2 border-success pb-2 text-success">
+              <CheckCircle2 aria-hidden className="size-6" />
+            </span>
+            <p className="mt-6 text-xs font-bold uppercase tracking-[0.15em] text-success">Imagem recebida</p>
+            <h2 className="mt-2 text-2xl font-bold tracking-[-0.03em] text-ink">Material pronto para análise</h2>
+            <p className="mt-3 max-w-xl text-sm leading-6 text-ink-muted">
               O protótipo concluiu a etapa de captura. O reconhecimento do material e os pontos de atenção serão apresentados na Parte 5.
             </p>
 
@@ -293,7 +295,7 @@ export function MaterialCapture() {
 
       {!image && cameraActive ? (
         <div className="p-5 sm:p-8">
-          <div className="overflow-hidden rounded-sm bg-[#252529]">
+          <div className="overflow-hidden border border-line bg-[#252529]">
             <div className="relative grid min-h-[22rem] place-items-center sm:min-h-[30rem]">
               <video
                 aria-label="Visualização ao vivo da câmera"
@@ -324,11 +326,13 @@ export function MaterialCapture() {
         </div>
       ) : !image ? (
         <div className="p-5 sm:p-8">
-          <div className="grid min-h-[27rem] place-items-center rounded-sm bg-surface-raised px-5 py-10 text-center">
+          <div className="grid min-h-[27rem] place-items-center border border-line bg-surface-raised px-5 py-10 text-center">
             <div className="max-w-md">
-              <ImagePlus aria-hidden className="mx-auto size-10 text-brand" />
-              <h2 className="mt-6 text-3xl font-bold tracking-[-0.03em] text-ink">Adicione uma foto do material</h2>
-              <p className="mt-3 text-base leading-7 text-ink-muted">
+              <span className="mx-auto inline-flex border-b-2 border-brand pb-3 text-brand">
+                <ImagePlus aria-hidden className="size-7" />
+              </span>
+              <h2 className="mt-6 text-2xl font-bold tracking-[-0.03em] text-ink">Adicione uma foto do material</h2>
+              <p className="mt-3 text-sm leading-6 text-ink-muted">
                 Centralize a peça, garanta boa iluminação e deixe visível toda a região que será inspecionada.
               </p>
 
@@ -341,7 +345,7 @@ export function MaterialCapture() {
                 </Button>
               </div>
 
-              <p className="mt-6 text-sm font-semibold text-ink-muted">Ou use uma imagem de demonstração</p>
+              <p className="mt-6 text-xs font-bold uppercase tracking-[0.12em] text-ink-subtle">Ou use uma imagem de demonstração</p>
               <div className="mt-3 flex flex-wrap justify-center gap-x-5 gap-y-2">
                 {samples.map((sample) => (
                   <button className="text-sm font-semibold text-brand hover:underline" key={sample.id} onClick={() => loadDemoImage(sample)} type="button">
@@ -349,8 +353,8 @@ export function MaterialCapture() {
                   </button>
                 ))}
               </div>
-              <p className="mt-4 text-sm text-ink-subtle">Formatos aceitos: JPG, PNG e WebP</p>
-              {uploadError && <p className="mt-2 text-sm font-semibold text-danger" role="alert">{uploadError}</p>}
+              <p className="mt-4 text-xs text-ink-subtle">Formatos aceitos: JPG, PNG e WebP</p>
+              {uploadError && <p className="mt-2 text-xs font-semibold text-danger" role="alert">{uploadError}</p>}
             </div>
           </div>
         </div>
@@ -396,11 +400,11 @@ export function MaterialCapture() {
             </div>
           </div>
 
-          <div className="bg-white p-5 sm:p-6">
+          <div className="border-t border-line bg-white p-5 sm:p-6">
             <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
               <div className="min-w-0">
-                <p className="truncate text-base font-bold text-ink">{image.fileName}</p>
-                <p className="mt-1 text-sm text-ink-subtle">{image.fileSize} · Pronta para revisão</p>
+                <p className="truncate text-sm font-bold text-ink">{image.fileName}</p>
+                <p className="mt-1 text-xs text-ink-subtle">{image.fileSize} · Pronta para revisão</p>
               </div>
               <div className="flex flex-wrap gap-2">
                 {selection && (
@@ -420,8 +424,8 @@ export function MaterialCapture() {
               </div>
             </div>
 
-            <div className="mt-6 pt-2 sm:flex sm:items-center sm:justify-between sm:gap-6">
-              <p className="text-sm leading-6 text-ink-muted">
+            <div className="mt-6 border-t border-line pt-5 sm:flex sm:items-center sm:justify-between sm:gap-6">
+              <p className="text-xs leading-5 text-ink-muted">
                 {selection ? "Aplique o recorte antes de continuar ou limpe a seleção para usar a foto inteira." : "Ao continuar, a imagem será usada somente nesta demonstração local."}
               </p>
               <Button className="mt-4 w-full shrink-0 sm:mt-0 sm:w-auto" disabled={Boolean(selection)} icon={<ArrowRight aria-hidden className="size-4" />} onClick={() => setPhase("submitted")}>

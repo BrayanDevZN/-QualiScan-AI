@@ -1,10 +1,10 @@
-import { ArrowRight } from "lucide-react";
+import {
+  ArrowRight,
+  ChevronRight,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/shadcn/accordion";
-import { Badge } from "@/components/shadcn/badge";
-import { Button } from "@/components/shadcn/button";
-import { Container } from "@/components/ui";
+import { Badge, Button, Container } from "@/components/ui";
 import { Reveal } from "@/components/motion/Reveal";
 import { AppHeader } from "@/layouts/AppHeader";
 import { AppShell } from "@/layouts/AppShell";
@@ -74,142 +74,149 @@ const benefits = [
   },
 ];
 
-const flow = ["Imagem do material", "Contexto dos POPs e medidas em mm", "Pontos de atenção"];
-
 export function HomePage() {
   return (
     <AppShell>
       <AppHeader />
 
       <main>
-        <section className="grid lg:min-h-[calc(100dvh-4.5rem)] lg:grid-cols-[minmax(0,1.12fr)_minmax(0,0.88fr)]">
-          <figure className="relative order-first min-h-[19rem] overflow-hidden bg-surface-overlay sm:min-h-[26rem] lg:order-last lg:min-h-0">
-            <img
-              alt="Profissional inspecionando um motor elétrico com apoio de um celular"
-              className="hero-photo absolute inset-0 size-full object-cover object-[66%_center]"
-              src="/assets/images/qualiscan-industrial-inspection.webp"
-            />
-            <figcaption className="absolute bottom-0 left-0 bg-surface px-5 py-4 text-base font-bold text-ink sm:px-7">
-              Leitura visual do material · demonstração de inspeção assistida
-            </figcaption>
-          </figure>
+        <section className="bg-white/82 py-10 sm:py-14 lg:py-20">
+          <Container>
+            <div className="grid items-stretch gap-10 lg:grid-cols-[0.88fr_1.12fr] lg:gap-14 xl:gap-20">
+              <Reveal className="flex flex-col justify-center py-4 lg:py-10">
+                <Badge>Inspeção de transformadores</Badge>
+                <h1 className="hero-in mt-7 max-w-xl text-balance text-[clamp(2.7rem,5vw,4.75rem)] font-bold leading-[1.02] tracking-[-0.05em] text-ink">
+                  Veja o que exige <span className="text-brand">atenção.</span>
+                </h1>
+                <p className="hero-in mt-7 max-w-lg border-l border-line-strong pl-5 text-base leading-7 text-ink-muted sm:text-lg sm:leading-8">
+                  Fotografe o transformador ou seus componentes e encontre os pontos importantes da inspeção, com as medidas sempre em milímetros e o apoio dos procedimentos da sua operação.
+                </p>
+                <div className="hero-in mt-9 flex flex-col gap-3 sm:flex-row">
+                  <Button asChild icon={<ArrowRight aria-hidden className="size-4" />} size="lg">
+                    <Link to="/scan">Iniciar uma inspeção</Link>
+                  </Button>
+                  <Button asChild size="lg" variant="secondary"><a href="#como-funciona">Como funciona</a></Button>
+                </div>
+              </Reveal>
 
-          <div className="flex flex-col justify-center gap-8 px-4 py-12 sm:px-6 sm:py-16 lg:py-20 lg:pr-14 lg:pl-10 xl:pl-[calc((100vw-88rem)/2+2.5rem)]">
-            <h1 className="hero-in text-display text-ink">
-              Veja o que exige <span className="text-brand">atenção.</span>
-            </h1>
-            <p className="hero-in max-w-xl text-lg leading-8 text-ink sm:text-xl sm:leading-9">
-              Inspeção de transformadores com apoio visual: fotografe o transformador ou seus componentes e encontre os pontos importantes, com as medidas sempre em milímetros e o apoio dos procedimentos da sua operação.
-            </p>
-            <div className="hero-in flex flex-col gap-3 sm:flex-row">
-              <Button asChild size="lg">
-                <Link to="/scan">Iniciar uma inspeção <ArrowRight aria-hidden /></Link>
-              </Button>
-              <Button asChild size="lg" variant="secondary">
-                <a href="#como-funciona">Como funciona</a>
-              </Button>
+              <Reveal className="min-h-[23rem] sm:min-h-[31rem] lg:min-h-[35rem]" delay={100}>
+                <figure className="relative size-full min-h-[23rem] overflow-hidden bg-surface-overlay sm:min-h-[31rem] lg:min-h-[35rem]">
+                  <img
+                    alt="Profissional inspecionando um motor elétrico com apoio de um celular"
+                    className="absolute inset-0 size-full object-cover object-[66%_center]"
+                    src="/assets/images/qualiscan-industrial-inspection.webp"
+                  />
+                  <figcaption className="absolute bottom-0 left-0 border-t-4 border-brand bg-white px-5 py-4 sm:px-6">
+                    <p className="text-xs font-bold uppercase tracking-[0.14em] text-ink">Leitura visual do material</p>
+                    <p className="mt-1 text-xs text-ink-muted">Demonstração de inspeção assistida</p>
+                  </figcaption>
+                </figure>
+              </Reveal>
             </div>
-          </div>
+          </Container>
         </section>
 
-        <section aria-label="Etapas da inspeção" className="bg-brand text-white">
-          <Container className="flex flex-col gap-3 py-10 sm:py-14 md:flex-row md:items-center md:justify-between md:gap-6">
-            {flow.map((label, index) => (
-              <Reveal className="flex items-center gap-6 md:gap-6" delay={index * 90} key={label}>
-                <p className="text-statement">{label}</p>
-                {index < flow.length - 1 && <ArrowRight aria-hidden className="hidden size-8 shrink-0 text-white/60 md:block" />}
+        <section className="border-y border-line bg-brand text-white">
+          <Container className="grid divide-y divide-white/20 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+            {[
+              ["01", "Imagem do material"],
+              ["02", "Contexto dos POPs e medidas em mm"],
+              ["03", "Pontos de atenção"],
+            ].map(([number, label]) => (
+              <Reveal className="px-1 sm:px-6 lg:px-10" delay={Number(number) * 60} key={number}>
+                <div className="flex items-center gap-4 py-5">
+                  <span className="text-xs font-bold tracking-[0.16em] text-white/65">{number}</span>
+                  <span className="text-sm font-semibold">{label}</span>
+                </div>
               </Reveal>
             ))}
           </Container>
         </section>
 
-        <section className="scroll-mt-16 py-20 sm:py-28 lg:scroll-mt-20 lg:py-36" id="como-funciona">
-          <Container className="grid gap-12 lg:grid-cols-[1fr_1fr] lg:gap-16">
-            <Reveal className="flex flex-col items-start gap-6 lg:sticky lg:top-28 lg:self-start">
-              <h2 className="text-title text-ink">Como usar o QualiScan, passo a passo.</h2>
-              <p className="max-w-md text-lg leading-8 text-ink">
-                Siga o fluxo completo, desde a preparação da foto até a conclusão da inspeção e a consulta das peças já analisadas.
-              </p>
-              <Button asChild size="lg">
-                <Link to="/scan">Iniciar uma inspeção <ArrowRight aria-hidden /></Link>
-              </Button>
+        <section className="scroll-mt-36 bg-white/82 py-20 sm:py-28 lg:scroll-mt-24" id="como-funciona">
+          <Container>
+            <Reveal className="max-w-2xl">
+              <Badge>Como funciona</Badge>
+              <h2 className="mt-3 text-balance text-3xl font-bold leading-tight tracking-[-0.04em] text-ink sm:text-5xl">Como usar o QualiScan, passo a passo.</h2>
+              <p className="mt-5 text-base leading-7 text-ink-muted sm:text-lg">Siga o fluxo completo, desde a preparação da foto até a conclusão da inspeção e a consulta das peças já analisadas.</p>
             </Reveal>
 
-            <Reveal delay={100}>
-              <Accordion className="gap-2" defaultValue="passo-1" type="single" collapsible>
-                {workflow.map(({ description, details, number, result, title }) => (
-                  <AccordionItem className="rounded-sm border-0 bg-surface" key={title} value={`passo-${Number(number)}`}>
-                    <AccordionTrigger className="px-5 py-5 text-left text-lg font-bold hover:no-underline sm:px-7 sm:py-6 sm:text-xl">
-                      {title}
-                    </AccordionTrigger>
-                    <AccordionContent className="px-5 pb-6 sm:px-7 sm:pb-8">
-                      <p className="max-w-2xl text-base leading-7 text-ink">{description}</p>
-                      <ul className="mt-5 flex flex-wrap gap-2">
+            <ol className="mt-12 border-y border-line">
+              {workflow.map(({ description, details, number, result, title }) => (
+                <li className="step-row border-b border-line last:border-b-0" key={title}>
+                  <Reveal className="grid gap-4 py-7 sm:grid-cols-[4rem_15rem_1fr] sm:items-start sm:gap-6 lg:grid-cols-[6rem_19rem_1fr] lg:py-9" delay={Number(number) * 45}>
+                    <span className="font-mono text-sm font-bold text-brand">{number}</span>
+                    <h3 className="text-xl font-bold tracking-[-0.025em] text-ink">{title}</h3>
+                    <div className="max-w-2xl">
+                      <p className="text-sm leading-6 text-ink-muted">{description}</p>
+                      <ul className="mt-5 grid gap-2 sm:grid-cols-3">
                         {details.map((detail) => (
-                          <li key={detail}>
-                            <Badge variant="secondary">{detail}</Badge>
+                          <li className="flex gap-2 text-xs font-semibold leading-5 text-ink" key={detail}>
+                            <span className="mt-2 size-1.5 shrink-0 bg-brand" />
+                            {detail}
                           </li>
                         ))}
                       </ul>
-                      <p className="mt-6 max-w-2xl text-base font-semibold leading-7 text-ink">{result}</p>
-                    </AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
-            </Reveal>
+                      <p className="mt-5 border-l-2 border-brand pl-3 text-xs font-semibold leading-5 text-ink">{result}</p>
+                    </div>
+                  </Reveal>
+                </li>
+              ))}
+            </ol>
           </Container>
         </section>
 
-        <section className="scroll-mt-16 bg-accent py-20 text-white sm:py-28 lg:scroll-mt-20 lg:py-36" id="beneficios">
-          <Container className="grid gap-14 lg:grid-cols-[1fr_1fr] lg:gap-16">
-            <Reveal className="flex flex-col gap-6">
-              <h2 className="text-title">Qualidade que acompanha o inspetor.</h2>
-              <p className="max-w-md text-lg leading-8 text-white">
-                O QualiScan aproxima o conhecimento técnico da rotina sem tornar o processo mais complicado.
-              </p>
-              <p className="max-w-md text-base leading-7 text-white">
-                A proposta é apoiar a decisão do profissional: a tecnologia organiza as referências, enquanto a avaliação continua nas mãos do inspetor.
-              </p>
-            </Reveal>
-
-            <div className="grid gap-x-10 gap-y-12 sm:grid-cols-2">
-              {benefits.map(({ description, outcome, title }, index) => (
-                <Reveal className="flex flex-col gap-3" delay={index * 80} key={title}>
-                  <h3 className="text-2xl font-bold leading-tight">{title}</h3>
-                  <p className="text-base leading-7 text-white">{description}</p>
-                  <p className="text-base font-semibold leading-7">{outcome}</p>
-                </Reveal>
-              ))}
+        <section className="scroll-mt-36 border-y border-line bg-canvas/82 py-20 sm:py-28 lg:scroll-mt-24" id="beneficios">
+          <Container>
+            <div className="grid gap-12 lg:grid-cols-[0.72fr_1.28fr] lg:gap-20">
+              <Reveal className="lg:sticky lg:top-10 lg:self-start">
+                <Badge>Informação no momento certo</Badge>
+                <h2 className="mt-4 text-balance text-3xl font-bold leading-tight tracking-[-0.04em] text-ink sm:text-5xl">Qualidade que acompanha o inspetor.</h2>
+                <p className="mt-5 max-w-md text-base leading-7 text-ink-muted">O QualiScan aproxima o conhecimento técnico da rotina sem tornar o processo mais complicado.</p>
+                <p className="mt-5 max-w-md border-l border-line-strong pl-4 text-sm leading-6 text-ink-muted">A proposta é apoiar a decisão do profissional: a tecnologia organiza as referências, enquanto a avaliação continua nas mãos do inspetor.</p>
+              </Reveal>
+              <div className="border-t border-line-strong">
+                {benefits.map(({ description, number, outcome, title }) => (
+                  <article className="step-row border-b border-line-strong" key={title}>
+                    <Reveal className="grid gap-3 py-6 sm:grid-cols-[3rem_12rem_1fr] sm:gap-5 sm:py-8" delay={Number(number) * 55}>
+                      <span className="font-mono text-xs font-bold text-brand">{number}</span>
+                      <h3 className="text-lg font-bold text-ink">{title}</h3>
+                      <div>
+                        <p className="text-sm leading-6 text-ink-muted">{description}</p>
+                        <p className="mt-3 text-xs font-semibold leading-5 text-ink">{outcome}</p>
+                      </div>
+                    </Reveal>
+                  </article>
+                ))}
+              </div>
             </div>
           </Container>
         </section>
 
-        <section className="bg-brand py-20 text-white sm:py-28 lg:py-36">
-          <Container className="grid gap-10 lg:grid-cols-[1.3fr_0.7fr] lg:items-end lg:gap-20">
-            <Reveal className="flex flex-col gap-6">
-              <h2 className="text-title">Comece pela imagem.</h2>
-              <p className="max-w-xl text-lg leading-8 text-white">Termine com uma decisão mais clara. Inicie o fluxo visual e veja como a captura do material será organizada.</p>
-            </Reveal>
-            <Reveal delay={100}>
-              <Button asChild className="w-full lg:w-auto" size="lg" variant="inverse">
-                <Link to="/scan">Começar agora <ArrowRight aria-hidden /></Link>
-              </Button>
+        <section className="bg-white/82 py-20 sm:py-28">
+          <Container>
+            <Reveal className="grid bg-brand text-white lg:grid-cols-[1fr_auto] lg:items-center">
+              <div className="p-7 sm:p-10 lg:p-12">
+                <p className="text-xs font-bold uppercase tracking-[0.16em] text-white/65">Próxima inspeção</p>
+                <h2 className="mt-4 max-w-2xl text-balance text-3xl font-bold leading-tight tracking-[-0.04em] sm:text-4xl">Comece pela imagem. Termine com uma decisão mais clara.</h2>
+                <p className="mt-4 max-w-xl text-base leading-7 text-white/75">Inicie o fluxo visual e veja como a captura do material será organizada.</p>
+              </div>
+              <div className="p-7 lg:p-12">
+                <Button asChild className="w-full border-white bg-white text-brand hover:bg-[#f2f2f0] lg:w-auto" icon={<ChevronRight aria-hidden className="size-4" />} size="lg">
+                  <Link to="/scan">Começar agora</Link>
+                </Button>
+              </div>
             </Reveal>
           </Container>
         </section>
       </main>
 
-      <footer className="bg-ink pt-14 text-white sm:pt-20">
+      <footer className="border-t border-line bg-white/95 py-7">
         <Container>
-          <img
-            alt="QualiScan AI"
-            className="h-auto w-full max-w-[56rem]"
-            src="/assets/brand/qualiscan-logo-inverse.svg"
-          />
-          <div className="mt-12 flex flex-col gap-2 pb-10 text-sm text-white/75 sm:flex-row sm:items-center sm:justify-between">
+          <Reveal className="flex flex-col gap-3 text-xs text-ink-subtle sm:flex-row sm:items-center sm:justify-between">
             <p>QualiScan AI · Protótipo visual</p>
             <p>Inspeções mais claras, decisões mais seguras.</p>
-          </div>
+          </Reveal>
         </Container>
       </footer>
     </AppShell>

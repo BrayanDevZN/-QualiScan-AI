@@ -1,28 +1,28 @@
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ClipboardList } from "lucide-react";
 import { Link } from "react-router-dom";
 
-import { Button } from "@/components/shadcn/button";
 import { AppShell } from "@/layouts/AppShell";
 
-import { Brand, Container } from "../ui";
+import { Badge, Brand, Button, Container, Surface } from "../ui";
 
 type RoutePlaceholderProps = { description: string; eyebrow: string; title: string };
 
 export function RoutePlaceholder({ description, eyebrow, title }: RoutePlaceholderProps) {
   return (
     <AppShell>
-      <header className="bg-surface">
-        <Container className="flex h-[4.5rem] items-center"><Brand /></Container>
+      <header className="border-b border-line bg-white">
+        <Container className="flex h-[4.75rem] items-center"><Brand /></Container>
       </header>
-      <Container className="grid min-h-[calc(100dvh-4.5rem)] place-items-center py-16">
-        <div className="flex w-full max-w-xl flex-col items-start gap-6">
-          <p className="text-display text-brand">{eyebrow}</p>
-          <h1 className="text-page-title text-ink">{title}</h1>
-          <p className="max-w-md text-lg leading-8 text-ink-muted">{description}</p>
-          <Button asChild size="lg">
-            <Link to="/home"><ArrowLeft aria-hidden /> Voltar ao início</Link>
+      <Container className="grid min-h-[calc(100dvh-4.75rem)] place-items-center py-16">
+        <Surface className="w-full max-w-xl border-t-4 border-t-brand p-7 sm:p-10">
+          <span className="mb-6 grid size-12 place-items-center bg-[#f4e7e5] text-brand"><ClipboardList aria-hidden className="size-6" /></span>
+          <Badge>{eyebrow}</Badge>
+          <h1 className="mt-5 text-3xl font-bold tracking-[-0.035em] text-ink sm:text-4xl">{title}</h1>
+          <p className="mt-4 max-w-md text-base leading-7 text-ink-muted">{description}</p>
+          <Button asChild className="mt-8" icon={<ArrowLeft className="size-4" />}>
+            <Link to="/home">Voltar ao início</Link>
           </Button>
-        </div>
+        </Surface>
       </Container>
     </AppShell>
   );

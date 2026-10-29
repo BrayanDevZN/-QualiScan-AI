@@ -1,9 +1,8 @@
-import { AlertTriangle, ArrowLeft } from "lucide-react";
+import { AlertTriangle, ArrowLeft, CheckCircle2 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
 import { Alert, AlertDescription } from "@/components/shadcn/alert";
-import { Button } from "@/components/shadcn/button";
-import { Container } from "@/components/ui";
+import { Badge, Button, Container } from "@/components/ui";
 import { Reveal } from "@/components/motion/Reveal";
 import { InspectionResults } from "@/features/inspection-results/InspectionResults";
 import { defaultSample, findSampleById, findSampleByImage } from "@/features/inspection-results/samples";
@@ -30,74 +29,89 @@ export function AnalysisPage() {
   const sample = findSampleById(state?.sampleId) ?? findSampleByImage(state?.imageSrc) ?? defaultSample;
   const imageSrc = state?.imageSrc ?? sample.imageSrc;
   const fileName = state?.fileName ?? sample.fileName;
-  const errorCount = sample.points.filter((point) => point.finding).length;
 
   return (
     <AppShell>
       <AppHeader />
-      <main className="pb-24 pt-8 sm:pt-12">
+      <main className="bg-canvas/82 pb-20 pt-8 sm:pt-12">
         <Container>
           <div className="flex flex-wrap items-center justify-between gap-4">
-            <Link className="inline-flex items-center gap-2 text-base font-semibold text-ink-muted transition-colors hover:text-brand" to="/scan">
+            <Link className="inline-flex items-center gap-2 text-sm font-semibold text-ink-muted hover:text-brand" to="/scan">
               <ArrowLeft aria-hidden className="size-4" /> Voltar à captura
             </Link>
             <Button asChild size="sm" variant="secondary"><Link to="/scan">Nova inspeção</Link></Button>
           </div>
 
-          <Reveal className="mt-8 flex flex-col gap-4">
-            <h1 className="text-page-title text-ink">Resultado da inspeção</h1>
-            <p className="max-w-2xl text-lg leading-8 text-ink-muted">
-              Revise os pontos sugeridos para o material e confirme cada verificação seguindo os procedimentos oficiais da operação. Resultado simulado.
-            </p>
+          <Reveal className="mt-8 flex flex-col justify-between gap-6 border-b border-line pb-8 lg:flex-row lg:items-end">
+            <div>
+              <Badge>Resultado simulado</Badge>
+              <h1 className="mt-5 text-4xl font-bold tracking-[-0.045em] text-ink sm:text-5xl">Resultado da inspeção</h1>
+              <p className="mt-3 max-w-2xl text-base leading-7 text-ink-muted">
+                Revise os pontos sugeridos para o material e confirme cada verificação seguindo os procedimentos oficiais da operação.
+              </p>
+            </div>
+            <div className="flex items-center gap-3 text-xs font-semibold text-ink-muted">
+              <span className="grid size-7 place-items-center bg-success text-white"><CheckCircle2 aria-hidden className="size-4" /></span>
+              <span>Captura</span>
+              <span className="h-px w-8 bg-success" />
+              <span className="grid size-7 place-items-center bg-brand text-white">2</span>
+              <span>Resultado</span>
+            </div>
           </Reveal>
 
-          <Reveal className="mt-10">
-            <dl aria-label="Resumo da identificação" className="grid gap-6 rounded-sm bg-surface p-5 sm:grid-cols-2 sm:p-6 lg:grid-cols-4">
-              <div>
-                <dt className="text-sm text-ink-muted">Material simulado</dt>
-                <dd className="mt-1 text-lg font-bold leading-snug text-ink">{sample.material}</dd>
-              </div>
-              <div>
-                <dt className="text-sm text-ink-muted">Pontos sugeridos</dt>
-                <dd className="mt-1 text-lg font-bold leading-snug text-ink">{sample.points.length} verificações · {errorCount} com erro observado</dd>
-              </div>
-              <div>
-                <dt className="text-sm text-ink-muted">Base de referência</dt>
-                <dd className="mt-1 text-lg font-bold leading-snug text-ink">POPs demonstrativos</dd>
-              </div>
-              <div>
-                <dt className="text-sm text-ink-muted">Estado</dt>
-                <dd className="mt-1 flex items-center gap-2 text-lg font-bold leading-snug text-ink"><span className="size-2.5 rounded-full bg-success" /> Pronta para revisão</dd>
-              </div>
-            </dl>
+          <Reveal>
+          <section aria-label="Resumo da identificação" className="mt-8 border-y border-line-strong bg-white lg:grid lg:grid-cols-4">
+            <div className="border-b border-line p-5 lg:border-b-0 lg:border-r">
+              <p className="text-xs font-bold uppercase tracking-[0.1em] text-ink-subtle">Material simulado</p>
+              <p className="mt-2 text-sm font-bold text-ink">{sample.material}</p>
+            </div>
+            <div className="border-b border-line p-5 lg:border-b-0 lg:border-r">
+              <p className="text-xs font-bold uppercase tracking-[0.1em] text-ink-subtle">Pontos sugeridos</p>
+              <p className="mt-2 text-sm font-bold text-ink">{sample.points.length} verificações · {sample.points.filter((point) => point.finding).length} com erro observado</p>
+            </div>
+            <div className="border-b border-line p-5 lg:border-b-0 lg:border-r">
+              <p className="text-xs font-bold uppercase tracking-[0.1em] text-ink-subtle">Base de referência</p>
+              <p className="mt-2 text-sm font-bold text-ink">POPs demonstrativos</p>
+            </div>
+            <div className="p-5">
+              <p className="text-xs font-bold uppercase tracking-[0.1em] text-ink-subtle">Estado</p>
+              <p className="mt-2 flex items-center gap-2 text-sm font-bold text-ink"><span className="size-2 bg-success" /> Pronta para revisão</p>
+            </div>
+          </section>
           </Reveal>
 
-          <Reveal className="mt-5" delay={70}>
-            <section aria-label="Pontos de atenção da inspeção">
+          <Reveal delay={70}>
+            <section className="mt-6" aria-label="Pontos de atenção da inspeção">
               <InspectionResults fileName={fileName} imageSrc={imageSrc} key={`${sample.id}-${imageSrc}`} points={sample.points} />
             </section>
           </Reveal>
 
-          <Reveal className="mt-20 grid gap-10 lg:grid-cols-[0.7fr_1.3fr] lg:gap-20">
-            <div className="flex flex-col gap-4">
-              <h2 className="text-title text-ink">Roteiro de inspeção visual</h2>
-              <p className="max-w-md text-base leading-7 text-ink-muted">
-                Conteúdo demonstrativo. Na versão integrada, esta área será preenchida pelo POP associado ao material reconhecido.
-              </p>
-            </div>
-            <div className="flex flex-col gap-6">
-              <ol className="flex list-decimal flex-col gap-4 pl-6 marker:font-bold marker:text-brand">
-                {procedureSteps.map((step) => (
-                  <li className="pl-2 text-lg leading-8 text-ink" key={step}>{step}</li>
+          <Reveal>
+          <section className="mt-12 border-t-2 border-t-brand bg-white p-6 sm:p-8">
+            <div className="grid gap-8 lg:grid-cols-[0.7fr_1.3fr] lg:gap-14">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-[0.15em] text-brand">Procedimento aplicável</p>
+                <h2 className="mt-3 text-2xl font-bold tracking-[-0.03em] text-ink sm:text-3xl">Roteiro de inspeção visual</h2>
+                <p className="mt-4 text-sm leading-6 text-ink-muted">
+                  Conteúdo demonstrativo. Na versão integrada, esta área será preenchida pelo POP associado ao material reconhecido.
+                </p>
+              </div>
+              <ol className="border-t border-line-strong">
+                {procedureSteps.map((step, index) => (
+                  <li className="grid grid-cols-[2.5rem_1fr] gap-4 border-b border-line py-4" key={step}>
+                    <span className="font-mono text-xs font-bold text-brand">{String(index + 1).padStart(2, "0")}</span>
+                    <p className="text-sm leading-6 text-ink-muted">{step}</p>
+                  </li>
                 ))}
               </ol>
-              <Alert variant="warning">
-                <AlertTriangle aria-hidden />
-                <AlertDescription className="text-base text-warning-text">
-                  Este protótipo não substitui avaliação técnica, requisitos de segurança ou o procedimento oficial vigente da empresa.
-                </AlertDescription>
-              </Alert>
             </div>
+            <Alert className="mt-7 text-xs leading-5" variant="warning">
+              <AlertTriangle aria-hidden />
+              <AlertDescription className="text-warning-text">
+                Este protótipo não substitui avaliação técnica, requisitos de segurança ou o procedimento oficial vigente da empresa.
+              </AlertDescription>
+            </Alert>
+          </section>
           </Reveal>
         </Container>
       </main>
