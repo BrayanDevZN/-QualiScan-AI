@@ -44,7 +44,7 @@ export const samples: InspectionSample[] = [
     points: [
       {
         id: 1,
-        position: { left: "31%", top: "30%" },
+        position: { left: "45%", top: "25%" },
         title: "Buchas e terminais (H1 a H3)",
         severity: "Alta atenção",
         severityVariant: "attention",
@@ -55,7 +55,7 @@ export const samples: InspectionSample[] = [
       },
       {
         id: 2,
-        position: { left: "72%", top: "28%" },
+        position: { left: "73%", top: "28%" },
         title: "Radiadores e aletas",
         severity: "Atenção moderada",
         severityVariant: "warning",
@@ -66,7 +66,7 @@ export const samples: InspectionSample[] = [
       },
       {
         id: 3,
-        position: { left: "43%", top: "66%" },
+        position: { left: "44%", top: "64%" },
         title: "Caixa de comando e instrumentos",
         severity: "Atenção moderada",
         severityVariant: "warning",
@@ -76,7 +76,7 @@ export const samples: InspectionSample[] = [
       },
       {
         id: 4,
-        position: { left: "28%", top: "63%" },
+        position: { left: "27%", top: "67%" },
         title: "Válvulas e flanges laterais",
         severity: "Verificação padrão",
         severityVariant: "success",
@@ -101,7 +101,7 @@ export const samples: InspectionSample[] = [
     points: [
       {
         id: 1,
-        position: { left: "21%", top: "83%" },
+        position: { left: "20.5%", top: "83%" },
         title: "Diâmetro e distância dos furos",
         severity: "Alta atenção",
         severityVariant: "attention",
@@ -112,7 +112,7 @@ export const samples: InspectionSample[] = [
       },
       {
         id: 2,
-        position: { left: "47%", top: "27%" },
+        position: { left: "50%", top: "33%" },
         title: "Etiqueta e identificação",
         severity: "Atenção moderada",
         severityVariant: "warning",
@@ -122,7 +122,7 @@ export const samples: InspectionSample[] = [
       },
       {
         id: 3,
-        position: { left: "36%", top: "72%" },
+        position: { left: "40%", top: "88%" },
         title: "Superfície do flange",
         severity: "Atenção moderada",
         severityVariant: "warning",
@@ -132,7 +132,7 @@ export const samples: InspectionSample[] = [
       },
       {
         id: 4,
-        position: { left: "26%", top: "30%" },
+        position: { left: "25%", top: "30%" },
         title: "Alavanca, haste e fixação",
         severity: "Verificação padrão",
         severityVariant: "success",
@@ -157,7 +157,7 @@ export const samples: InspectionSample[] = [
     points: [
       {
         id: 1,
-        position: { left: "25%", top: "12%" },
+        position: { left: "24%", top: "12%" },
         title: "Escrita correta",
         severity: "Alta atenção",
         severityVariant: "attention",
@@ -167,7 +167,7 @@ export const samples: InspectionSample[] = [
       },
       {
         id: 2,
-        position: { left: "4.5%", top: "31.5%" },
+        position: { left: "4.4%", top: "31.8%" },
         title: "Diâmetro e distância dos furos",
         severity: "Atenção moderada",
         severityVariant: "warning",
@@ -178,7 +178,7 @@ export const samples: InspectionSample[] = [
       },
       {
         id: 3,
-        position: { left: "42%", top: "50%" },
+        position: { left: "30%", top: "57%" },
         title: "Superfícies e acabamento",
         severity: "Atenção moderada",
         severityVariant: "warning",
@@ -188,7 +188,7 @@ export const samples: InspectionSample[] = [
       },
       {
         id: 4,
-        position: { left: "93%", top: "66%" },
+        position: { left: "48.3%", top: "70%" },
         title: "Altura e largura",
         severity: "Verificação padrão",
         severityVariant: "success",
