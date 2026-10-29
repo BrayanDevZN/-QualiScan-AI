@@ -12,6 +12,8 @@ import {
 import { type ChangeEvent, type PointerEvent as ReactPointerEvent, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
+import { type InspectionSample, samples } from "@/features/inspection-results/samples";
+
 import { Button, Surface } from "@/components/ui";
 
 type SelectedImage = {
@@ -148,11 +150,11 @@ export function MaterialCapture() {
     event.target.value = "";
   }
 
-  function useDemoImage() {
+  function loadDemoImage(sample: InspectionSample) {
     setImage({
-      fileName: "trafo-potencia.jpg",
+      fileName: sample.fileName,
       fileSize: "Imagem simulada",
-      src: "/assets/images/trafo-potencia.jpg",
+      src: sample.imageSrc,
     });
     setUploadError(undefined);
     setSelection(undefined);
@@ -343,9 +345,14 @@ export function MaterialCapture() {
                 </Button>
               </div>
 
-              <button className="mt-6 text-sm font-semibold text-brand hover:underline" onClick={useDemoImage} type="button">
-                Usar imagem de demonstração
-              </button>
+              <p className="mt-6 text-xs font-bold uppercase tracking-[0.12em] text-ink-subtle">Ou use uma imagem de demonstração</p>
+              <div className="mt-3 flex flex-wrap justify-center gap-x-5 gap-y-2">
+                {samples.map((sample) => (
+                  <button className="text-sm font-semibold text-brand hover:underline" key={sample.id} onClick={() => loadDemoImage(sample)} type="button">
+                    {sample.material}
+                  </button>
+                ))}
+              </div>
               <p className="mt-4 text-xs text-ink-subtle">Formatos aceitos: JPG, PNG e WebP</p>
               {uploadError && <p className="mt-2 text-xs font-semibold text-danger" role="alert">{uploadError}</p>}
             </div>

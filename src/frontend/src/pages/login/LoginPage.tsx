@@ -7,9 +7,9 @@ export function LoginPage() {
     <main className="page-enter min-h-dvh bg-transparent lg:grid lg:grid-cols-[minmax(0,1.08fr)_minmax(28rem,0.92fr)]">
       <section className="relative min-h-[18rem] overflow-hidden bg-[#27262a] lg:min-h-dvh">
         <img
-          alt="Transformador de potência na área de montagem industrial"
-          className="absolute inset-0 size-full object-cover object-[55%_center]"
-          src="/assets/images/trafo-potencia.jpg"
+          alt="Inspetor avaliando um componente de motor elétrico em ambiente industrial"
+          className="absolute inset-0 size-full object-cover object-[66%_center]"
+          src="/assets/images/qualiscan-industrial-inspection.webp"
         />
         <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-[#27262a]/95 via-[#27262a]/62 to-[#27262a]/10 lg:bg-gradient-to-t lg:from-[#27262a]/95 lg:via-[#27262a]/35 lg:to-transparent" />
 

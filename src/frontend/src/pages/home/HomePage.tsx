@@ -8,9 +8,6 @@ import { Badge, Button, Container } from "@/components/ui";
 import { Reveal } from "@/components/motion/Reveal";
 import { AppHeader } from "@/layouts/AppHeader";
 import { AppShell } from "@/layouts/AppShell";
-import { Badge as StatusBadge } from "@/components/shadcn/badge";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/shadcn/card";
-import { samples } from "@/features/inspection-results/samples";
 
 const workflow = [
   {
@@ -105,13 +102,13 @@ export function HomePage() {
               <Reveal className="min-h-[23rem] sm:min-h-[31rem] lg:min-h-[35rem]" delay={100}>
                 <figure className="relative size-full min-h-[23rem] overflow-hidden bg-surface-overlay sm:min-h-[31rem] lg:min-h-[35rem]">
                   <img
-                    alt="Transformador de potência na área de montagem, com buchas, radiadores e caixas de comando"
-                    className="absolute inset-0 size-full object-cover object-[55%_center]"
-                    src="/assets/images/trafo-potencia.jpg"
+                    alt="Profissional inspecionando um motor elétrico com apoio de um celular"
+                    className="absolute inset-0 size-full object-cover object-[66%_center]"
+                    src="/assets/images/qualiscan-industrial-inspection.webp"
                   />
                   <figcaption className="absolute bottom-0 left-0 border-t-4 border-brand bg-white px-5 py-4 sm:px-6">
-                    <p className="text-xs font-bold uppercase tracking-[0.14em] text-ink">Leitura visual do transformador</p>
-                    <p className="mt-1 text-xs text-ink-muted">Exemplo real, análise demonstrativa</p>
+                    <p className="text-xs font-bold uppercase tracking-[0.14em] text-ink">Leitura visual do material</p>
+                    <p className="mt-1 text-xs text-ink-muted">Demonstração de inspeção assistida</p>
                   </figcaption>
                 </figure>
               </Reveal>
@@ -166,39 +163,6 @@ export function HomePage() {
                 </li>
               ))}
             </ol>
-          </Container>
-        </section>
-
-        <section className="scroll-mt-36 border-t border-line bg-canvas/82 py-20 sm:py-28 lg:scroll-mt-24" id="exemplos">
-          <Container>
-            <Reveal className="max-w-2xl">
-              <Badge>Exemplos reais</Badge>
-              <h2 className="mt-3 text-balance text-3xl font-bold leading-tight tracking-[-0.04em] text-ink sm:text-5xl">O que o QualiScan confere em cada item.</h2>
-              <p className="mt-5 text-base leading-7 text-ink-muted sm:text-lg">Três itens do dia a dia da inspeção de transformadores, já com os pontos de atenção marcados. Todas as dimensões são conferidas em milímetros (mm).</p>
-            </Reveal>
-
-            <div className="mt-12 grid gap-6 md:grid-cols-3">
-              {samples.map((sample, index) => (
-                <Reveal delay={index * 80} key={sample.id}>
-                  <Card className="sample-card h-full gap-0 overflow-hidden py-0">
-                    <div className="relative aspect-[4/3] overflow-hidden bg-surface-overlay">
-                      <img alt={sample.imageAlt} className="sample-card__image absolute inset-0 size-full object-cover" src={sample.imageSrc} />
-                    </div>
-                    <CardHeader className="gap-3 px-6 pt-6">
-                      <StatusBadge variant="secondary">{sample.points.length} pontos de atenção</StatusBadge>
-                      <CardTitle className="text-lg font-bold leading-snug tracking-[-0.02em] text-ink">{sample.material}</CardTitle>
-                      <CardDescription className="leading-6 text-ink-muted">{sample.description}</CardDescription>
-                    </CardHeader>
-                    <CardContent className="mt-auto flex flex-col gap-4 px-6 pb-6 pt-5">
-                      <p className="border-l-2 border-brand pl-3 text-xs font-semibold leading-5 text-ink">{sample.focus}</p>
-                      <Button asChild icon={<ChevronRight aria-hidden className="size-4" />} size="sm" variant="secondary">
-                        <Link state={{ sampleId: sample.id }} to="/analysis">Ver análise</Link>
-                      </Button>
-                    </CardContent>
-                  </Card>
-                </Reveal>
-              ))}
-            </div>
           </Container>
         </section>
 
