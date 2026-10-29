@@ -1,52 +1,79 @@
-import { LogOut, ScanLine } from "lucide-react";
-import { useEffect, useState } from "react";
+import { LogOut, Menu, ScanLine } from "lucide-react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
-import { Brand, Button, Container } from "@/components/ui";
+import { Button } from "@/components/shadcn/button";
+import { Sheet, SheetClose, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/shadcn/sheet";
+import { Brand, Container } from "@/components/ui";
+
+const links = [
+  { label: "Como funciona", to: "/home#como-funciona" },
+  { label: "Benefícios", to: "/home#beneficios" },
+  { label: "Análises", to: "/history" },
+];
 
 export function AppHeader() {
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const update = () => setScrolled(window.scrollY > 8);
-    update();
-    window.addEventListener("scroll", update, { passive: true });
-    return () => window.removeEventListener("scroll", update);
-  }, []);
+  const [open, setOpen] = useState(false);
 
   return (
-    <header data-scrolled={scrolled} className="app-header sticky top-0 z-50 border-b border-t-[3px] border-b-line border-t-brand bg-white shadow-[0_6px_20px_rgb(39_38_42/0.06)]">
-      <Container className="flex h-[4.875rem] items-center justify-between gap-5">
-        <Link aria-label="QualiScan AI — início" className="focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand" to="/home">
+    <header className="sticky top-0 z-50 bg-surface">
+      <Container className="flex h-16 items-center justify-between gap-4 sm:h-[4.5rem]">
+        <Link aria-label="QualiScan AI, início" className="rounded-sm" to="/home">
           <Brand />
         </Link>
-        <nav aria-label="Navegação principal" className="hidden items-center gap-8 lg:flex">
-          <Link className="nav-link text-sm font-medium text-ink-muted hover:text-brand" to="/home#como-funciona">Como funciona</Link>
-          <Link className="nav-link text-sm font-medium text-ink-muted hover:text-brand" to="/home#beneficios">Benefícios</Link>
-          <Link className="nav-link text-sm font-medium text-ink-muted hover:text-brand" to="/history">Análises</Link>
+
+        <nav aria-label="Navegação principal" className="hidden items-center gap-9 lg:flex">
+          {links.map(({ label, to }) => (
+            <Link className="text-base font-medium text-ink-muted transition-colors hover:text-brand" key={to} to={to}>
+              {label}
+            </Link>
+          ))}
         </nav>
+
         <div className="flex items-center gap-2">
-          <Button asChild className="hidden sm:inline-flex" icon={<ScanLine aria-hidden className="size-4" />} size="sm">
-            <Link to="/scan">Nova inspeção</Link>
+          <Button asChild className="hidden sm:inline-flex" size="default">
+            <Link to="/scan"><ScanLine aria-hidden /> Nova inspeção</Link>
           </Button>
-          <Button asChild aria-label="Sair da demonstração" size="icon" variant="ghost">
-            <Link to="/login"><LogOut aria-hidden className="size-[1.125rem]" /></Link>
+          <Button asChild aria-label="Sair da demonstração" className="hidden lg:inline-flex" size="icon" variant="ghost">
+            <Link to="/login"><LogOut aria-hidden /></Link>
           </Button>
+
+          <Sheet onOpenChange={setOpen} open={open}>
+            <SheetTrigger asChild>
+              <Button aria-label="Abrir menu" className="lg:hidden" size="icon" variant="ghost">
+                <Menu aria-hidden className="size-6" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent className="w-[min(22rem,90vw)] gap-0 bg-surface">
+              <SheetHeader className="p-6 text-left">
+                <SheetTitle className="text-xl font-bold">Menu</SheetTitle>
+                <SheetDescription>Navegue pelo QualiScan AI.</SheetDescription>
+              </SheetHeader>
+              <nav aria-label="Navegação no celular" className="flex flex-col gap-1 px-4">
+                {links.map(({ label, to }) => (
+                  <SheetClose asChild key={to}>
+                    <Link className="rounded-sm px-3 py-4 text-lg font-semibold text-ink transition-colors hover:bg-surface-overlay" to={to}>
+                      {label}
+                    </Link>
+                  </SheetClose>
+                ))}
+              </nav>
+              <div className="mt-auto flex flex-col gap-3 p-6">
+                <SheetClose asChild>
+                  <Button asChild size="lg">
+                    <Link to="/scan"><ScanLine aria-hidden /> Nova inspeção</Link>
+                  </Button>
+                </SheetClose>
+                <SheetClose asChild>
+                  <Button asChild size="lg" variant="ghost">
+                    <Link to="/login"><LogOut aria-hidden /> Sair da demonstração</Link>
+                  </Button>
+                </SheetClose>
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
       </Container>
-      <nav aria-label="Navegação principal no celular" className="border-t border-line lg:hidden">
-        <Container className="grid grid-cols-3 px-0 sm:px-0">
-          <Link className="border-r border-line py-3 text-center text-xs font-semibold text-ink-muted hover:bg-surface-raised hover:text-brand" to="/home#como-funciona">
-            Como funciona
-          </Link>
-          <Link className="border-r border-line py-3 text-center text-xs font-semibold text-ink-muted hover:bg-surface-raised hover:text-brand" to="/home#beneficios">
-            Benefícios
-          </Link>
-          <Link className="py-3 text-center text-xs font-semibold text-ink-muted hover:bg-surface-raised hover:text-brand" to="/history">
-            Análises
-          </Link>
-        </Container>
-      </nav>
     </header>
   );
 }

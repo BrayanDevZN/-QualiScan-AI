@@ -8,17 +8,19 @@ type RevealProps = HTMLAttributes<HTMLDivElement> & {
 
 export function Reveal({ className, delay = 0, style, ...props }: RevealProps) {
   const elementRef = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(() => typeof IntersectionObserver === "undefined");
 
   useEffect(() => {
     const element = elementRef.current;
-    if (!element) return;
+    if (!element || typeof IntersectionObserver === "undefined") return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        setVisible(entry.isIntersecting);
+        if (!entry.isIntersecting) return;
+        setVisible(true);
+        observer.disconnect();
       },
-      { rootMargin: "-4% 0px -8%", threshold: 0.08 },
+      { rootMargin: "0px 0px -8%", threshold: 0.05 },
     );
 
     observer.observe(element);
@@ -27,7 +29,7 @@ export function Reveal({ className, delay = 0, style, ...props }: RevealProps) {
 
   return (
     <div
-      className={cn("reveal-on-scroll", visible && "is-visible", className)}
+      className={cn("reveal", visible && "is-visible", className)}
       ref={elementRef}
       style={{ ...style, transitionDelay: visible ? `${delay}ms` : "0ms" }}
       {...props}
