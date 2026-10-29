@@ -457,11 +457,15 @@
 
   /* analysis markers: smooth size change and a soft pulse on the active point */
   .point-marker {
-    transition: width 220ms ease, height 220ms ease, background-color 220ms ease, transform 220ms ease;
+    transition: scale 180ms ease, background-color 220ms ease;
   }
 
   .point-marker:hover {
-    transform: translate(-50%, -50%) scale(1.1);
+    scale: 1.1;
+  }
+
+  .point-marker.is-active {
+    scale: 1.2;
   }
 
   .point-marker.is-active::after {
