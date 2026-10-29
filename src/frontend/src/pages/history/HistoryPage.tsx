@@ -5,50 +5,17 @@ import { Link } from "react-router-dom";
 import { Badge as SectionLabel, Button, Container } from "@/components/ui";
 import { Badge } from "@/components/shadcn/badge";
 import { Reveal } from "@/components/motion/Reveal";
+import { samples } from "@/features/inspection-results/samples";
 import { AppHeader } from "@/layouts/AppHeader";
 import { AppShell } from "@/layouts/AppShell";
 
-const inspections = [
-  {
-    code: "ME-0482",
-    date: "28 set. 2026 · 13:42",
-    material: "Motor elétrico industrial",
-    points: "3 pontos verificados",
-    status: "Requer atenção",
-    statusVariant: "attention" as const,
-  },
-  {
-    code: "MV-V11",
-    date: "28 set. 2026 · 10:18",
-    material: "Motoventilador V11",
-    points: "2 pontos verificados",
-    status: "Concluída",
-    statusVariant: "success" as const,
-  },
-  {
-    code: "CE-0317",
-    date: "27 set. 2026 · 16:05",
-    material: "Carcaça de motor elétrico",
-    points: "4 pontos verificados",
-    status: "Concluída",
-    statusVariant: "success" as const,
-  },
-  {
-    code: "EX-0209",
-    date: "27 set. 2026 · 09:26",
-    material: "Conjunto de eixo e acoplamento",
-    points: "3 pontos verificados",
-    status: "Requer atenção",
-    statusVariant: "attention" as const,
-  },
-];
 
 export function HistoryPage() {
   const [query, setQuery] = useState("");
   const visibleInspections = useMemo(() => {
     const normalizedQuery = query.trim().toLocaleLowerCase("pt-BR");
-    if (!normalizedQuery) return inspections;
-    return inspections.filter(({ code, material }) =>
+    if (!normalizedQuery) return samples;
+    return samples.filter(({ code, material }) =>
       `${material} ${code}`.toLocaleLowerCase("pt-BR").includes(normalizedQuery),
     );
   }, [query]);
@@ -92,21 +59,21 @@ export function HistoryPage() {
           </Reveal>
 
           <section aria-label="Lista de peças analisadas" className="mt-5 border-t border-line-strong">
-            {visibleInspections.map(({ code, date, material, points, status, statusVariant }) => (
+            {visibleInspections.map(({ code, date, id, imageAlt, imageSrc, material, points, status, statusVariant }) => (
               <article className="history-row border-b border-line-strong bg-white" key={code}>
                 <Reveal className="grid gap-5 px-5 py-6 sm:px-6 lg:grid-cols-[5rem_minmax(0,1.4fr)_minmax(10rem,0.7fr)_minmax(9rem,0.6fr)_auto] lg:items-center">
                 <div className="relative aspect-square overflow-hidden bg-surface-overlay">
                   <img
-                    alt="Miniatura do material analisado"
+                    alt={imageAlt}
                     className="absolute inset-0 size-full object-cover"
-                    src="/assets/images/qualiscan-industrial-inspection.webp"
+                    src={imageSrc}
                   />
                 </div>
 
                 <div className="min-w-0">
                   <p className="text-xs font-bold uppercase tracking-[0.12em] text-brand">{code}</p>
                   <h2 className="mt-2 text-lg font-bold text-ink">{material}</h2>
-                  <p className="mt-1 text-sm text-ink-muted">{points}</p>
+                  <p className="mt-1 text-sm text-ink-muted">{points.length} pontos de atenção</p>
                 </div>
 
                 <p className="flex items-center gap-2 text-sm text-ink-muted">
@@ -118,7 +85,7 @@ export function HistoryPage() {
                 </div>
 
                 <Button asChild icon={<ChevronRight aria-hidden className="size-4" />} size="sm" variant="secondary">
-                  <Link to="/analysis">Ver análise</Link>
+                  <Link state={{ sampleId: id }} to="/analysis">Ver análise</Link>
                 </Button>
                 </Reveal>
               </article>

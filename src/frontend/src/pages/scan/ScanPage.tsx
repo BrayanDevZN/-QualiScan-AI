@@ -12,6 +12,7 @@ const photoTips = [
   "Use iluminação uniforme e evite sombras fortes.",
   "Enquadre toda a região que precisa ser verificada.",
   "Evite reflexos, desfoque e objetos cobrindo a peça.",
+  "Para conferir dimensões, mostre as bordas inteiras. As medidas são sempre em milímetros (mm).",
 ];
 
 export function ScanPage() {

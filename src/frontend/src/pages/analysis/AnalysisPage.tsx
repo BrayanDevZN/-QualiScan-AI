@@ -5,17 +5,20 @@ import { Alert, AlertDescription } from "@/components/shadcn/alert";
 import { Badge, Button, Container } from "@/components/ui";
 import { Reveal } from "@/components/motion/Reveal";
 import { InspectionResults } from "@/features/inspection-results/InspectionResults";
+import { defaultSample, findSampleById, findSampleByImage } from "@/features/inspection-results/samples";
 import { AppHeader } from "@/layouts/AppHeader";
 import { AppShell } from "@/layouts/AppShell";
 
 type AnalysisLocationState = {
   fileName?: string;
   imageSrc?: string;
+  sampleId?: string;
 };
 
 const procedureSteps = [
   "Confirmar a identificação e a condição segura para inspeção.",
   "Revisar visualmente cada ponto destacado na imagem.",
+  "Medir com instrumento calibrado e registrar todas as dimensões em milímetros (mm).",
   "Comparar a condição observada com o POP oficial da empresa.",
   "Registrar evidências e encaminhar divergências ao responsável.",
 ];
@@ -23,8 +26,9 @@ const procedureSteps = [
 export function AnalysisPage() {
   const location = useLocation();
   const state = location.state as AnalysisLocationState | null;
-  const imageSrc = state?.imageSrc ?? "/assets/images/qualiscan-industrial-inspection.webp";
-  const fileName = state?.fileName ?? "material-demonstracao.webp";
+  const sample = findSampleById(state?.sampleId) ?? findSampleByImage(state?.imageSrc) ?? defaultSample;
+  const imageSrc = state?.imageSrc ?? sample.imageSrc;
+  const fileName = state?.fileName ?? sample.fileName;
 
   return (
     <AppShell>
@@ -59,11 +63,11 @@ export function AnalysisPage() {
           <section aria-label="Resumo da identificação" className="mt-8 border-y border-line-strong bg-white lg:grid lg:grid-cols-4">
             <div className="border-b border-line p-5 lg:border-b-0 lg:border-r">
               <p className="text-xs font-bold uppercase tracking-[0.1em] text-ink-subtle">Material simulado</p>
-              <p className="mt-2 text-sm font-bold text-ink">Motor elétrico industrial</p>
+              <p className="mt-2 text-sm font-bold text-ink">{sample.material}</p>
             </div>
             <div className="border-b border-line p-5 lg:border-b-0 lg:border-r">
               <p className="text-xs font-bold uppercase tracking-[0.1em] text-ink-subtle">Pontos sugeridos</p>
-              <p className="mt-2 text-sm font-bold text-ink">3 verificações visuais</p>
+              <p className="mt-2 text-sm font-bold text-ink">{sample.points.length} verificações visuais</p>
             </div>
             <div className="border-b border-line p-5 lg:border-b-0 lg:border-r">
               <p className="text-xs font-bold uppercase tracking-[0.1em] text-ink-subtle">Base de referência</p>
@@ -78,7 +82,7 @@ export function AnalysisPage() {
 
           <Reveal delay={70}>
             <section className="mt-6" aria-label="Pontos de atenção da inspeção">
-              <InspectionResults fileName={fileName} imageSrc={imageSrc} />
+              <InspectionResults fileName={fileName} imageSrc={imageSrc} key={`${sample.id}-${imageSrc}`} points={sample.points} />
             </section>
           </Reveal>
 

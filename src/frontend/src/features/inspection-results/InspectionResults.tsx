@@ -1,4 +1,4 @@
-import { AlertTriangle, Check, CheckCircle2, ClipboardCheck, Eye, MapPin } from "lucide-react";
+import { AlertTriangle, Check, CheckCircle2, ClipboardCheck, Eye, MapPin, Ruler } from "lucide-react";
 import { type SyntheticEvent, useState } from "react";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/shadcn/alert";
@@ -7,46 +7,16 @@ import { Progress } from "@/components/shadcn/progress";
 import { Button, Surface } from "@/components/ui";
 import { cn } from "@/lib/cn";
 
+import type { AttentionPoint } from "./samples";
+
 type InspectionResultsProps = {
   fileName: string;
   imageSrc: string;
+  points: AttentionPoint[];
 };
 
-const attentionPoints = [
-  {
-    id: 1,
-    position: { left: "88%", top: "42%" },
-    title: "Bobinamento e isolação",
-    severity: "Alta atenção",
-    severityVariant: "attention" as const,
-    summary: "Verifique sinais visuais de escurecimento, deformação ou deslocamento no conjunto de bobinas.",
-    observations: ["Uniformidade dos condutores", "Integridade aparente da isolação", "Marcas de aquecimento ou atrito"],
-    pop: "POP-ME-014 · Inspeção visual de estatores",
-  },
-  {
-    id: 2,
-    position: { left: "70%", top: "24%" },
-    title: "Carcaça e fixações",
-    severity: "Atenção moderada",
-    severityVariant: "warning" as const,
-    summary: "Observe o estado externo da carcaça e a condição visual dos pontos de união e fixação.",
-    observations: ["Trincas ou deformações", "Oxidação superficial", "Fixadores ausentes ou desalinhados"],
-    pop: "POP-ME-006 · Verificação externa de motores",
-  },
-  {
-    id: 3,
-    position: { left: "54%", top: "48%" },
-    title: "Eixo e região de acoplamento",
-    severity: "Verificação padrão",
-    severityVariant: "success" as const,
-    summary: "Confirme visualmente a condição do eixo e procure marcas incomuns na região de acoplamento.",
-    observations: ["Riscos ou rebarbas", "Sinais de impacto", "Condição aparente da superfície"],
-    pop: "POP-ME-009 · Avaliação visual do eixo",
-  },
-];
-
-export function InspectionResults({ fileName, imageSrc }: InspectionResultsProps) {
-  const [activeId, setActiveId] = useState(1);
+export function InspectionResults({ fileName, imageSrc, points: attentionPoints }: InspectionResultsProps) {
+  const [activeId, setActiveId] = useState(attentionPoints[0]?.id ?? 1);
   const [verified, setVerified] = useState<Set<number>>(new Set());
   const [completed, setCompleted] = useState(false);
   const [imageAspectRatio, setImageAspectRatio] = useState("4 / 3");
@@ -76,7 +46,7 @@ export function InspectionResults({ fileName, imageSrc }: InspectionResultsProps
         <Alert className="animate-in-up" role="status" variant="success">
           <CheckCircle2 aria-hidden />
           <AlertTitle className="font-bold text-ink">Inspeção visual concluída</AlertTitle>
-          <AlertDescription className="text-ink-muted">Os três pontos foram marcados como verificados nesta demonstração local.</AlertDescription>
+          <AlertDescription className="text-ink-muted">Os {attentionPoints.length} pontos foram marcados como verificados nesta demonstração local.</AlertDescription>
         </Alert>
       )}
 
@@ -141,6 +111,21 @@ export function InspectionResults({ fileName, imageSrc }: InspectionResultsProps
                 ))}
               </ul>
             </div>
+
+            {activePoint.measurements && (
+              <div className="border-b border-line p-5 sm:p-6">
+                <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.12em] text-ink-subtle">
+                  <Ruler aria-hidden className="size-4 text-brand" /> Medir (em mm)
+                </p>
+                <ul className="mt-4 space-y-3">
+                  {activePoint.measurements.map((measurement) => (
+                    <li className="flex gap-3 text-sm leading-5 text-ink" key={measurement}>
+                      <span className="mt-1.5 size-1.5 shrink-0 bg-brand" /> {measurement}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
             <div className="p-5 sm:p-6">
               <p className="text-xs font-bold uppercase tracking-[0.12em] text-ink-subtle">Referência simulada</p>

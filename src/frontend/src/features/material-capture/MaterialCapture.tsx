@@ -150,9 +150,9 @@ export function MaterialCapture() {
 
   function useDemoImage() {
     setImage({
-      fileName: "material-demonstracao.webp",
+      fileName: "trafo-potencia.jpg",
       fileSize: "Imagem simulada",
-      src: "/assets/images/qualiscan-industrial-inspection.webp",
+      src: "/assets/images/trafo-potencia.jpg",
     });
     setUploadError(undefined);
     setSelection(undefined);
