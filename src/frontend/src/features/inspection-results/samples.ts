@@ -5,6 +5,8 @@ export type AttentionPoint = {
   severity: string;
   severityVariant: "attention" | "warning" | "success";
   summary: string;
+  /** Error seen in the photo for this point. Absent when nothing wrong was observed. */
+  finding?: string;
   observations: string[];
   measurements?: string[];
   pop: string;
@@ -49,6 +51,7 @@ export const samples: InspectionSample[] = [
         severity: "Alta atenção",
         severityVariant: "attention",
         summary: "Verifique a integridade das buchas de alta tensão, a vedação da base e a identificação dos terminais.",
+        finding: "A marcação do terminal H3 aparece parcialmente encoberta na foto. Refaça o registro com outro ângulo para confirmar H1, H2 e H3.",
         observations: ["Trincas ou lascas na porcelana", "Vedação e fixação da base", "Marcação correta dos terminais H1, H2 e H3"],
         measurements: ["Altura e diâmetro de cada bucha (mm)", "Distância entre os eixos das buchas (mm)"],
         pop: "POP-TR-014 · Inspeção visual de buchas e terminais",
@@ -60,6 +63,7 @@ export const samples: InspectionSample[] = [
         severity: "Atenção moderada",
         severityVariant: "warning",
         summary: "Observe o estado dos painéis do radiador, das conexões ao tanque e do acabamento da pintura.",
+        finding: "Manchas avermelhadas na pintura do tanque, junto ao radiador. Podem ser reflexo de luz ou início de oxidação; confirme na peça.",
         observations: ["Amassados ou deformações nas aletas", "Sinais de óleo nas conexões", "Falhas de pintura ou início de oxidação"],
         measurements: ["Espessura da camada de pintura, quando exigida (µm)"],
         pop: "POP-TR-009 · Verificação externa de radiadores",
@@ -71,6 +75,7 @@ export const samples: InspectionSample[] = [
         severity: "Atenção moderada",
         severityVariant: "warning",
         summary: "Confira a caixa de ligações, os visores, os conduítes e os instrumentos de proteção.",
+        finding: "Cabos brancos soltos pendurados na frente da caixa de comando. Confira se estão fixados e identificados.",
         observations: ["Vedação e fechamento da tampa", "Fiação e conduítes bem fixados", "Visores e indicadores sem danos"],
         pop: "POP-TR-021 · Inspeção de painéis e instrumentos",
       },
@@ -106,6 +111,7 @@ export const samples: InspectionSample[] = [
         severity: "Alta atenção",
         severityVariant: "attention",
         summary: "Meça o diâmetro de cada furo do flange e a distância entre eles, comparando com o desenho da série 204 DIN.",
+        finding: "O furo do flange está parcialmente coberto pelo plástico bolha. Não dá para confirmar o diâmetro pela foto: retire a proteção e meça em mm.",
         observations: ["Furos livres de rebarbas", "Circularidade e posição dos furos", "Mesmo padrão nos dois flanges"],
         measurements: ["Diâmetro de cada furo (mm)", "Distância entre os furos (mm)", "Diâmetro externo do flange (mm)"],
         pop: "POP-VF-003 · Dimensional de flanges",
@@ -117,6 +123,7 @@ export const samples: InspectionSample[] = [
         severity: "Atenção moderada",
         severityVariant: "warning",
         summary: "Compare o texto da etiqueta com a ordem de serviço: código, descrição, quantidade e finalidade.",
+        finding: "A etiqueta está parcialmente encoberta pela alavanca e pela fita: código, descrição e data aparecem cortados. A conferência com a OS fica incompleta.",
         observations: ["Código e descrição conferem com a OS", "Quantidade da etiqueta (2 unidades)", "Código de barras legível e finalidade \"Fechamento - Trafo\""],
         pop: "POP-VF-001 · Conferência de identificação",
       },
@@ -172,6 +179,7 @@ export const samples: InspectionSample[] = [
         severity: "Atenção moderada",
         severityVariant: "warning",
         summary: "Meça o diâmetro dos furos de fixação e a distância entre eles em cada placa.",
+        finding: "Alguns furos aparecem com parafuso ou marca de fenda (como em V2/V8 e V5/V19) e outros estão vazios. Confirme o padrão e meça em mm.",
         observations: ["Furos centralizados na placa", "Sem rebarbas nas bordas dos furos", "Mesmo padrão em todas as placas"],
         measurements: ["Diâmetro de cada furo (mm)", "Distância entre os furos (mm)"],
         pop: "POP-PI-004 · Dimensional de furos",
@@ -183,6 +191,7 @@ export const samples: InspectionSample[] = [
         severity: "Atenção moderada",
         severityVariant: "warning",
         summary: "Observe a face da placa em busca de riscos, manchas ou marcas de manuseio.",
+        finding: "Riscos finos e marcas de manuseio na superfície, mais visíveis nas placas da coluna da esquerda.",
         observations: ["Riscos profundos na superfície", "Manchas ou oxidação", "Bordas sem cortes ou rebarbas"],
         pop: "POP-PI-005 · Condição de superfícies",
       },

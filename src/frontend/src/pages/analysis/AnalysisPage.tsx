@@ -67,7 +67,7 @@ export function AnalysisPage() {
             </div>
             <div className="border-b border-line p-5 lg:border-b-0 lg:border-r">
               <p className="text-xs font-bold uppercase tracking-[0.1em] text-ink-subtle">Pontos sugeridos</p>
-              <p className="mt-2 text-sm font-bold text-ink">{sample.points.length} verificações visuais</p>
+              <p className="mt-2 text-sm font-bold text-ink">{sample.points.length} verificações · {sample.points.filter((point) => point.finding).length} com erro observado</p>
             </div>
             <div className="border-b border-line p-5 lg:border-b-0 lg:border-r">
               <p className="text-xs font-bold uppercase tracking-[0.1em] text-ink-subtle">Base de referência</p>

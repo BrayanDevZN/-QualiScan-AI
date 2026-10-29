@@ -99,6 +99,19 @@ export function InspectionResults({ fileName, imageSrc, points: attentionPoints 
                 {activePoint.severity}
               </Badge>
               <p className="mt-4 text-sm leading-6 text-ink-muted">{activePoint.summary}</p>
+              {activePoint.finding ? (
+                <Alert className="mt-5" variant="destructive">
+                  <AlertTriangle aria-hidden />
+                  <AlertTitle className="text-xs font-bold uppercase tracking-[0.1em]">Erro observado</AlertTitle>
+                  <AlertDescription className="text-ink">{activePoint.finding}</AlertDescription>
+                </Alert>
+              ) : (
+                <Alert className="mt-5" variant="success">
+                  <CheckCircle2 aria-hidden />
+                  <AlertTitle className="text-xs font-bold uppercase tracking-[0.1em]">Nenhum erro observado</AlertTitle>
+                  <AlertDescription className="text-ink-muted">Nada fora do esperado neste ponto, pela foto. Siga a verificação abaixo.</AlertDescription>
+                </Alert>
+              )}
             </div>
 
             <div className="border-b border-line p-5 sm:p-6">
@@ -153,7 +166,7 @@ export function InspectionResults({ fileName, imageSrc, points: attentionPoints 
               <AlertTriangle aria-hidden className="size-5 text-brand" />
               <p className="font-bold text-ink">Revisão do inspetor</p>
             </div>
-            <p className="mt-2 text-sm text-ink-muted">{verified.size} de {attentionPoints.length} pontos marcados como verificados.</p>
+            <p className="mt-2 text-sm text-ink-muted">{verified.size} de {attentionPoints.length} pontos marcados como verificados. {attentionPoints.filter((point) => point.finding).length} com erro observado.</p>
             <Progress
               aria-label="Pontos verificados"
               className="mt-4 w-full sm:w-72"
