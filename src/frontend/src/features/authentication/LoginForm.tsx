@@ -128,7 +128,7 @@ export function LoginForm() {
       </div>
 
       <Button
-        className="mt-6 w-full border-line-strong bg-white text-ink shadow-none hover:border-line-strong hover:bg-surface-raised hover:shadow-[0_4px_14px_rgb(39_38_42/0.1)]"
+        className="mt-6 w-full border-line-strong bg-white text-ink shadow-none hover:border-line-strong hover:bg-surface-raised hover:shadow-[0_4px_14px_rgb(166_33_21/0.25)]"
         icon={<GoogleLogo />}
         onClick={() => navigate("/home")}
         size="lg"

@@ -13,7 +13,7 @@ export function AppHeader() {
   return (
     <header className="sticky top-0 z-50 pt-3">
       <Container className="max-w-[70rem] px-5 sm:px-8">
-        <div className="rounded-[2rem] border border-line bg-white/90 shadow-panel backdrop-blur-md lg:rounded-full">
+        <div className="rounded-[2rem] border border-line bg-white/95 shadow-panel lg:rounded-full">
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 px-3 pt-3 pb-2 sm:h-16 sm:flex-nowrap sm:justify-between sm:p-0 sm:pr-2.5 sm:pl-8 lg:pb-0">
             <Link aria-label="QualiScan AI — início" className="order-1 mr-auto rounded-full pl-1 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand sm:mr-0 sm:pl-0" to="/home">
               <Brand className="[&_img]:h-8 sm:[&_img]:h-11" />

@@ -106,7 +106,7 @@ export function HomePage() {
                     className="absolute inset-0 size-full object-cover object-[66%_center]"
                     src="/assets/images/qualiscan-industrial-inspection.webp"
                   />
-                  <figcaption className="absolute bottom-4 left-4 rounded-2xl bg-white/95 px-5 py-3 shadow-panel backdrop-blur sm:bottom-6 sm:left-6">
+                  <figcaption className="absolute bottom-4 left-4 rounded-2xl bg-white/95 px-5 py-3 shadow-panel sm:bottom-6 sm:left-6">
                     <p className="text-xs font-bold uppercase tracking-[0.14em] text-ink">Leitura visual do material</p>
                     <p className="mt-1 text-xs text-ink-muted">Demonstração de inspeção assistida</p>
                   </figcaption>

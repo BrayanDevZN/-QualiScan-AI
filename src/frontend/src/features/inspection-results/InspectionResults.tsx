@@ -72,7 +72,7 @@ export function InspectionResults({ fileName, imageSrc, onVerifiedChange, points
                   aria-label={`Ponto ${point.id}: ${point.title}`}
                   aria-pressed={activeId === point.id}
                   className={cn(
-                    "point-marker absolute grid size-10 -translate-x-1/2 -translate-y-1/2 place-items-center border-2 border-white bg-brand text-sm font-bold text-white shadow-[0_3px_12px_rgb(0_0_0/0.35)] focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-white",
+                    "point-marker absolute grid size-10 -translate-x-1/2 -translate-y-1/2 place-items-center border-2 border-white bg-brand text-sm font-bold text-white shadow-[0_3px_12px_rgb(166_33_21/0.55)] focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-white",
                     activeId === point.id && "is-active size-12 border-[3px]",
                     verified.has(point.id) && "bg-success",
                   )}
