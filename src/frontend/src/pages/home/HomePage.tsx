@@ -80,11 +80,11 @@ export function HomePage() {
       <AppHeader />
 
       <main>
-        <section className="bg-white/82 py-10 sm:py-14 lg:py-20">
+        <section className="py-8 sm:py-12 lg:py-16">
           <Container>
             <div className="grid items-stretch gap-10 lg:grid-cols-[0.88fr_1.12fr] lg:gap-14 xl:gap-20">
               <Reveal className="flex flex-col justify-center py-4 lg:py-10">
-                <Badge>Inspeção de transformadores</Badge>
+                <Badge className="rounded-full bg-danger-soft px-3 py-1.5">Inspeção de transformadores</Badge>
                 <h1 className="hero-in mt-7 max-w-xl text-balance text-[clamp(2.7rem,5vw,4.75rem)] font-bold leading-[1.02] tracking-[-0.05em] text-ink">
                   Veja o que exige <span className="text-brand">atenção.</span>
                 </h1>
@@ -100,13 +100,13 @@ export function HomePage() {
               </Reveal>
 
               <Reveal className="min-h-[23rem] sm:min-h-[31rem] lg:min-h-[35rem]" delay={100}>
-                <figure className="relative size-full min-h-[23rem] overflow-hidden bg-surface-overlay sm:min-h-[31rem] lg:min-h-[35rem]">
+                <figure className="relative size-full min-h-[23rem] overflow-hidden rounded-[2rem] bg-surface-overlay shadow-panel sm:min-h-[31rem] lg:min-h-[35rem]">
                   <img
                     alt="Profissional inspecionando um motor elétrico com apoio de um celular"
                     className="absolute inset-0 size-full object-cover object-[66%_center]"
                     src="/assets/images/qualiscan-industrial-inspection.webp"
                   />
-                  <figcaption className="absolute bottom-0 left-0 border-t-4 border-brand bg-white px-5 py-4 sm:px-6">
+                  <figcaption className="absolute bottom-4 left-4 rounded-2xl bg-white/95 px-5 py-3 shadow-panel backdrop-blur sm:bottom-6 sm:left-6">
                     <p className="text-xs font-bold uppercase tracking-[0.14em] text-ink">Leitura visual do material</p>
                     <p className="mt-1 text-xs text-ink-muted">Demonstração de inspeção assistida</p>
                   </figcaption>
@@ -116,8 +116,8 @@ export function HomePage() {
           </Container>
         </section>
 
-        <section className="border-y border-line bg-brand text-white">
-          <Container className="grid divide-y divide-white/20 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+        <section className="py-4">
+          <Container className="grid divide-y divide-white/20 overflow-hidden rounded-[2rem] bg-brand text-white shadow-panel sm:grid-cols-3 sm:divide-x sm:divide-y-0">
             {[
               ["01", "Imagem do material"],
               ["02", "Contexto dos POPs e medidas em mm"],
@@ -133,7 +133,7 @@ export function HomePage() {
           </Container>
         </section>
 
-        <section className="scroll-mt-36 bg-white/82 py-20 sm:py-28 lg:scroll-mt-24" id="como-funciona">
+        <section className="scroll-mt-28 py-16 sm:py-24" id="como-funciona">
           <Container>
             <Reveal className="max-w-2xl">
               <Badge>Como funciona</Badge>
@@ -141,9 +141,9 @@ export function HomePage() {
               <p className="mt-5 text-base leading-7 text-ink-muted sm:text-lg">Siga o fluxo completo, desde a preparação da foto até a conclusão da inspeção e a consulta das peças já analisadas.</p>
             </Reveal>
 
-            <ol className="mt-12 border-y border-line">
+            <ol className="mt-12 flex flex-col gap-4">
               {workflow.map(({ description, details, number, result, title }) => (
-                <li className="step-row border-b border-line last:border-b-0" key={title}>
+                <li className="step-row rounded-3xl border border-line bg-white px-5 shadow-panel sm:px-8" key={title}>
                   <Reveal className="grid gap-4 py-7 sm:grid-cols-[4rem_15rem_1fr] sm:items-start sm:gap-6 lg:grid-cols-[6rem_19rem_1fr] lg:py-9" delay={Number(number) * 45}>
                     <span className="font-mono text-sm font-bold text-brand">{number}</span>
                     <h3 className="text-xl font-bold tracking-[-0.025em] text-ink">{title}</h3>
@@ -152,7 +152,7 @@ export function HomePage() {
                       <ul className="mt-5 grid gap-2 sm:grid-cols-3">
                         {details.map((detail) => (
                           <li className="flex gap-2 text-xs font-semibold leading-5 text-ink" key={detail}>
-                            <span className="mt-2 size-1.5 shrink-0 bg-brand" />
+                            <span className="mt-2 size-1.5 shrink-0 rounded-full bg-brand" />
                             {detail}
                           </li>
                         ))}
@@ -166,7 +166,7 @@ export function HomePage() {
           </Container>
         </section>
 
-        <section className="scroll-mt-36 border-y border-line bg-canvas/82 py-20 sm:py-28 lg:scroll-mt-24" id="beneficios">
+        <section className="scroll-mt-28 py-16 sm:py-24" id="beneficios">
           <Container>
             <div className="grid gap-12 lg:grid-cols-[0.72fr_1.28fr] lg:gap-20">
               <Reveal className="lg:sticky lg:top-10 lg:self-start">
@@ -175,9 +175,9 @@ export function HomePage() {
                 <p className="mt-5 max-w-md text-base leading-7 text-ink-muted">O QualiScan aproxima o conhecimento técnico da rotina sem tornar o processo mais complicado.</p>
                 <p className="mt-5 max-w-md border-l border-line-strong pl-4 text-sm leading-6 text-ink-muted">A proposta é apoiar a decisão do profissional: a tecnologia organiza as referências, enquanto a avaliação continua nas mãos do inspetor.</p>
               </Reveal>
-              <div className="border-t border-line-strong">
+              <div className="flex flex-col gap-4">
                 {benefits.map(({ description, number, outcome, title }) => (
-                  <article className="step-row border-b border-line-strong" key={title}>
+                  <article className="step-row rounded-3xl border border-line bg-white px-5 shadow-panel sm:px-7" key={title}>
                     <Reveal className="grid gap-3 py-6 sm:grid-cols-[3rem_12rem_1fr] sm:gap-5 sm:py-8" delay={Number(number) * 55}>
                       <span className="font-mono text-xs font-bold text-brand">{number}</span>
                       <h3 className="text-lg font-bold text-ink">{title}</h3>
@@ -193,16 +193,16 @@ export function HomePage() {
           </Container>
         </section>
 
-        <section className="bg-white/82 py-20 sm:py-28">
+        <section className="py-16 sm:py-24">
           <Container>
-            <Reveal className="grid bg-brand text-white lg:grid-cols-[1fr_auto] lg:items-center">
+            <Reveal className="grid overflow-hidden rounded-[2rem] bg-brand text-white shadow-panel lg:grid-cols-[1fr_auto] lg:items-center">
               <div className="p-7 sm:p-10 lg:p-12">
                 <p className="text-xs font-bold uppercase tracking-[0.16em] text-white/65">Próxima inspeção</p>
                 <h2 className="mt-4 max-w-2xl text-balance text-3xl font-bold leading-tight tracking-[-0.04em] sm:text-4xl">Comece pela imagem. Termine com uma decisão mais clara.</h2>
                 <p className="mt-4 max-w-xl text-base leading-7 text-white/75">Inicie o fluxo visual e veja como a captura do material será organizada.</p>
               </div>
               <div className="p-7 lg:p-12">
-                <Button asChild className="w-full border-white bg-white text-brand hover:bg-[#f2f2f0] lg:w-auto" icon={<ChevronRight aria-hidden className="size-4" />} size="lg">
+                <Button asChild className="w-full bg-white text-brand shadow-none hover:bg-white/90 lg:w-auto" icon={<ChevronRight aria-hidden className="size-4" />} size="lg">
                   <Link to="/scan">Começar agora</Link>
                 </Button>
               </div>
@@ -211,7 +211,7 @@ export function HomePage() {
         </section>
       </main>
 
-      <footer className="border-t border-line bg-white/95 py-7">
+      <footer className="py-7">
         <Container>
           <Reveal className="flex flex-col gap-3 text-xs text-ink-subtle sm:flex-row sm:items-center sm:justify-between">
             <p>QualiScan AI · Protótipo visual</p>

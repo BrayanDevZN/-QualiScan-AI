@@ -31,17 +31,8 @@ export function LoginPage() {
         </div>
       </section>
 
-      <section className="relative flex flex-col items-center justify-center overflow-hidden bg-white/82 px-5 py-12 sm:px-10 lg:min-h-dvh lg:px-12 xl:px-20">
-        <div aria-hidden className="login-corner-3d">
-          <span className="login-corner-3d__orbit login-corner-3d__orbit--outer" />
-          <span className="login-corner-3d__orbit login-corner-3d__orbit--inner" />
-          <span className="login-corner-3d__core" />
-          <div className="login-corner-3d__cube">
-            <span /><span /><span /><span /><span /><span />
-          </div>
-        </div>
-
-        <Reveal className="relative z-10 mx-auto w-full max-w-[29rem]" delay={80}>
+      <section className="relative flex flex-col items-center justify-center overflow-hidden bg-transparent px-5 py-12 sm:px-10 lg:min-h-dvh lg:px-12 xl:px-20">
+        <Reveal className="relative z-10 mx-auto w-full max-w-[29rem] rounded-3xl border border-line bg-white p-6 shadow-panel sm:p-9" delay={80}>
           <div className="mb-9 border-t border-line pt-6">
             <p className="text-xs font-bold uppercase tracking-[0.15em] text-brand">Acesso à plataforma</p>
             <h2 className="mt-3 text-3xl font-bold tracking-[-0.035em] text-ink sm:text-4xl">Bem-vindo de volta</h2>

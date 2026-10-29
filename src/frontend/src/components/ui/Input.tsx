@@ -23,7 +23,7 @@ export function Input({ className, endAdornment, error, icon, id, label, ...prop
           aria-describedby={errorId}
           aria-invalid={Boolean(error)}
           className={cn(
-            "min-h-13 w-full rounded-sm border bg-white px-4 text-sm text-ink outline-none placeholder:text-ink-subtle focus:border-brand focus:ring-2 focus:ring-brand/10",
+            "min-h-13 w-full rounded-xl border bg-white px-4 text-sm text-ink outline-none placeholder:text-ink-subtle focus:border-brand focus:ring-2 focus:ring-brand/10",
             icon && "pl-12",
             endAdornment && "pr-12",
             error ? "border-danger" : "border-line-strong",

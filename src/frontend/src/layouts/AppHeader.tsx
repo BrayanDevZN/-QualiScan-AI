@@ -1,52 +1,46 @@
 import { LogOut, ScanLine } from "lucide-react";
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { Brand, Button, Container } from "@/components/ui";
 
+const links = [
+  { label: "Como funciona", to: "/home#como-funciona" },
+  { label: "Benefícios", to: "/home#beneficios" },
+  { label: "Análises", to: "/history" },
+];
+
 export function AppHeader() {
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const update = () => setScrolled(window.scrollY > 8);
-    update();
-    window.addEventListener("scroll", update, { passive: true });
-    return () => window.removeEventListener("scroll", update);
-  }, []);
-
   return (
-    <header data-scrolled={scrolled} className="app-header sticky top-0 z-50 border-b border-t-[3px] border-b-line border-t-brand bg-white shadow-[0_6px_20px_rgb(39_38_42/0.06)]">
-      <Container className="flex h-[4.875rem] items-center justify-between gap-5">
-        <Link aria-label="QualiScan AI — início" className="focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand" to="/home">
-          <Brand />
-        </Link>
-        <nav aria-label="Navegação principal" className="hidden items-center gap-8 lg:flex">
-          <Link className="nav-link text-sm font-medium text-ink-muted hover:text-brand" to="/home#como-funciona">Como funciona</Link>
-          <Link className="nav-link text-sm font-medium text-ink-muted hover:text-brand" to="/home#beneficios">Benefícios</Link>
-          <Link className="nav-link text-sm font-medium text-ink-muted hover:text-brand" to="/history">Análises</Link>
-        </nav>
-        <div className="flex items-center gap-2">
-          <Button asChild className="hidden sm:inline-flex" icon={<ScanLine aria-hidden className="size-4" />} size="sm">
-            <Link to="/scan">Nova inspeção</Link>
-          </Button>
-          <Button asChild aria-label="Sair da demonstração" size="icon" variant="ghost">
-            <Link to="/login"><LogOut aria-hidden className="size-[1.125rem]" /></Link>
-          </Button>
+    <header className="sticky top-0 z-50 pt-3">
+      <Container className="max-w-[70rem] px-5 sm:px-8">
+        <div className="rounded-[2rem] border border-line bg-white/90 shadow-panel backdrop-blur-md lg:rounded-full">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 px-3 pt-3 pb-2 sm:h-16 sm:flex-nowrap sm:justify-between sm:p-0 sm:pr-2.5 sm:pl-8 lg:pb-0">
+            <Link aria-label="QualiScan AI — início" className="order-1 mr-auto rounded-full pl-1 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand sm:mr-0 sm:pl-0" to="/home">
+              <Brand className="[&_img]:h-8 sm:[&_img]:h-11" />
+            </Link>
+            <nav aria-label="Navegação principal" className="order-2 hidden items-center gap-1 lg:flex">
+              {links.map(({ label, to }) => (
+                <Button asChild key={label} size="sm" variant="ghost">
+                  <Link to={to}>{label}</Link>
+                </Button>
+              ))}
+            </nav>
+            <Button asChild className="order-4 w-full sm:order-3 sm:w-auto" icon={<ScanLine aria-hidden />} size="sm">
+              <Link to="/scan">Nova inspeção</Link>
+            </Button>
+            <Button asChild aria-label="Sair da demonstração" className="order-3 sm:order-4 sm:ml-0" size="icon" variant="ghost">
+              <Link to="/login"><LogOut aria-hidden /></Link>
+            </Button>
+          </div>
+          <nav aria-label="Navegação principal no celular" className="grid grid-cols-3 gap-1.5 px-3 pb-3 lg:hidden">
+            {links.map(({ label, to }) => (
+              <Button asChild key={label} className="h-8 px-1 text-[0.7rem] sm:text-xs" size="sm" variant="secondary">
+                <Link to={to}>{label}</Link>
+              </Button>
+            ))}
+          </nav>
         </div>
       </Container>
-      <nav aria-label="Navegação principal no celular" className="border-t border-line lg:hidden">
-        <Container className="grid grid-cols-3 px-0 sm:px-0">
-          <Link className="border-r border-line py-3 text-center text-xs font-semibold text-ink-muted hover:bg-surface-raised hover:text-brand" to="/home#como-funciona">
-            Como funciona
-          </Link>
-          <Link className="border-r border-line py-3 text-center text-xs font-semibold text-ink-muted hover:bg-surface-raised hover:text-brand" to="/home#beneficios">
-            Benefícios
-          </Link>
-          <Link className="py-3 text-center text-xs font-semibold text-ink-muted hover:bg-surface-raised hover:text-brand" to="/history">
-            Análises
-          </Link>
-        </Container>
-      </nav>
     </header>
   );
 }

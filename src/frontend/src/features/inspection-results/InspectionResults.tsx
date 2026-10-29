@@ -1,5 +1,5 @@
 import { AlertTriangle, Check, CheckCircle2, ClipboardCheck, Eye, MapPin, Ruler } from "lucide-react";
-import { type SyntheticEvent, useState } from "react";
+import { type SyntheticEvent, useEffect, useState } from "react";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/shadcn/alert";
 import { Badge } from "@/components/shadcn/badge";
@@ -12,16 +12,21 @@ import type { AttentionPoint } from "./samples";
 type InspectionResultsProps = {
   fileName: string;
   imageSrc: string;
+  onVerifiedChange?: (verified: ReadonlySet<number>) => void;
   points: AttentionPoint[];
 };
 
-export function InspectionResults({ fileName, imageSrc, points: attentionPoints }: InspectionResultsProps) {
+export function InspectionResults({ fileName, imageSrc, onVerifiedChange, points: attentionPoints }: InspectionResultsProps) {
   const [activeId, setActiveId] = useState(attentionPoints[0]?.id ?? 1);
   const [verified, setVerified] = useState<Set<number>>(new Set());
   const [completed, setCompleted] = useState(false);
   const [imageAspectRatio, setImageAspectRatio] = useState("4 / 3");
   const activePoint = attentionPoints.find((point) => point.id === activeId) ?? attentionPoints[0];
   const allVerified = verified.size === attentionPoints.length;
+
+  useEffect(() => {
+    onVerifiedChange?.(verified);
+  }, [onVerifiedChange, verified]);
 
   function toggleVerified(id: number) {
     setVerified((current) => {

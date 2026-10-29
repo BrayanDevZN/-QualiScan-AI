@@ -1,9 +1,11 @@
-import { AlertTriangle, ArrowLeft, CheckCircle2 } from "lucide-react";
+import { AlertTriangle, ArrowLeft, CheckCircle2, FileText } from "lucide-react";
+import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 import { Alert, AlertDescription } from "@/components/shadcn/alert";
 import { Badge, Button, Container } from "@/components/ui";
 import { Reveal } from "@/components/motion/Reveal";
+import { InspectionReport } from "@/features/inspection-results/InspectionReport";
 import { InspectionResults } from "@/features/inspection-results/InspectionResults";
 import { defaultSample, findSampleById, findSampleByImage } from "@/features/inspection-results/samples";
 import { AppHeader } from "@/layouts/AppHeader";
@@ -29,17 +31,22 @@ export function AnalysisPage() {
   const sample = findSampleById(state?.sampleId) ?? findSampleByImage(state?.imageSrc) ?? defaultSample;
   const imageSrc = state?.imageSrc ?? sample.imageSrc;
   const fileName = state?.fileName ?? sample.fileName;
+  const [verified, setVerified] = useState<ReadonlySet<number>>(new Set());
+  const generatedAt = new Date().toLocaleString("pt-BR", { dateStyle: "long", timeStyle: "short" });
 
   return (
     <AppShell>
       <AppHeader />
-      <main className="bg-canvas/82 pb-20 pt-8 sm:pt-12">
+      <main className="bg-canvas/82 pb-20 pt-8 sm:pt-12 print:hidden">
         <Container>
           <div className="flex flex-wrap items-center justify-between gap-4">
             <Link className="inline-flex items-center gap-2 text-sm font-semibold text-ink-muted hover:text-brand" to="/scan">
               <ArrowLeft aria-hidden className="size-4" /> Voltar à captura
             </Link>
-            <Button asChild size="sm" variant="secondary"><Link to="/scan">Nova inspeção</Link></Button>
+            <div className="flex flex-wrap items-center gap-3">
+              <Button icon={<FileText aria-hidden />} onClick={() => window.print()} size="sm">Gerar relatório</Button>
+              <Button asChild size="sm" variant="secondary"><Link to="/scan">Nova inspeção</Link></Button>
+            </div>
           </div>
 
           <Reveal className="mt-8 flex flex-col justify-between gap-6 border-b border-line pb-8 lg:flex-row lg:items-end">
@@ -82,7 +89,7 @@ export function AnalysisPage() {
 
           <Reveal delay={70}>
             <section className="mt-6" aria-label="Pontos de atenção da inspeção">
-              <InspectionResults fileName={fileName} imageSrc={imageSrc} key={`${sample.id}-${imageSrc}`} points={sample.points} />
+              <InspectionResults fileName={fileName} imageSrc={imageSrc} key={`${sample.id}-${imageSrc}`} onVerifiedChange={setVerified} points={sample.points} />
             </section>
           </Reveal>
 
@@ -115,6 +122,9 @@ export function AnalysisPage() {
           </Reveal>
         </Container>
       </main>
+      <Container className="print:py-0">
+        <InspectionReport fileName={fileName} generatedAt={generatedAt} imageSrc={imageSrc} sample={sample} verified={verified} />
+      </Container>
     </AppShell>
   );
 }

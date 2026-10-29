@@ -1,7 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: Inter, Arial, Helvetica, sans-serif;
+  --font-sans: "Plus Jakarta Sans Variable", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, monospace;
 
   --color-canvas: #f5f5f3;
   --color-surface: #ffffff;
@@ -48,7 +49,7 @@
   --color-input: var(--color-line-strong);
   --color-ring: var(--color-brand);
 
-  --shadow-panel: 0 14px 36px rgb(39 38 42 / 0.08);
+  --shadow-panel: 0 22px 50px -8px rgb(39 38 42 / 0.28), 0 6px 16px rgb(166 33 21 / 0.14);
 }
 
 @layer base {
@@ -128,109 +129,58 @@
     z-index: 0;
     overflow: hidden;
     pointer-events: none;
-    perspective: 1000px;
-    perspective-origin: 70% 45%;
+    background:
+      radial-gradient(ellipse 70% 55% at 100% 0%, rgb(166 33 21 / 0.05), transparent 70%),
+      radial-gradient(ellipse 60% 50% at 0% 100%, rgb(166 33 21 / 0.04), transparent 70%),
+      radial-gradient(circle at 1px 1px, rgb(39 38 42 / 0.06) 1px, transparent 0) 0 0 / 28px 28px;
   }
 
-  .ambient-3d__plane {
+  .ambient-3d__blob {
     position: absolute;
-    right: -14rem;
-    bottom: -22rem;
-    width: 58rem;
-    height: 48rem;
-    opacity: 0.36;
-    background-image:
-      linear-gradient(rgb(166 33 21 / 0.11) 1px, transparent 1px),
-      linear-gradient(90deg, rgb(166 33 21 / 0.11) 1px, transparent 1px);
-    background-size: 42px 42px;
-    transform: rotateX(64deg) rotateZ(-18deg) translate3d(0, 0, -80px);
-    transform-style: preserve-3d;
-    animation: ambient-plane-drift 18s ease-in-out infinite alternate;
-    mask-image: radial-gradient(circle at center, black 15%, transparent 72%);
-  }
-
-  .ambient-3d__frame {
-    position: absolute;
-    width: 8rem;
-    aspect-ratio: 1;
-    border: 1px solid rgb(19 51 95 / 0.11);
-    transform-style: preserve-3d;
+    border-radius: 9999px;
+    filter: blur(80px);
     will-change: transform;
   }
 
-  .ambient-3d__frame::before,
-  .ambient-3d__frame::after,
-  .ambient-3d__frame span {
+  .ambient-3d__blob--one {
+    top: -8rem;
+    right: -6rem;
+    width: 36rem;
+    height: 36rem;
+    background: rgb(166 33 21 / 0.1);
+    animation: ambient-blob-one 20s ease-in-out infinite alternate;
+  }
+
+  .ambient-3d__blob--two {
+    bottom: -10rem;
+    left: -8rem;
+    width: 32rem;
+    height: 32rem;
+    background: rgb(138 26 16 / 0.08);
+    animation: ambient-blob-two 24s ease-in-out infinite alternate;
+  }
+
+  .ambient-3d__blob--three {
+    top: 40%;
+    left: 40%;
+    width: 24rem;
+    height: 24rem;
+    background: rgb(166 33 21 / 0.04);
+    animation: ambient-blob-three 28s ease-in-out infinite alternate;
+  }
+
+  /* rain: thin red streaks falling fast on a slight diagonal */
+  .ambient-3d__drop {
     position: absolute;
-    inset: 14%;
-    border: 1px solid rgb(166 33 21 / 0.1);
-    content: "";
-    transform-style: preserve-3d;
-  }
-
-  .ambient-3d__frame::before {
-    transform: translateZ(30px);
-  }
-
-  .ambient-3d__frame::after {
-    transform: translateZ(-30px);
-  }
-
-  .ambient-3d__frame span {
-    inset: 34%;
-    background: rgb(166 33 21 / 0.025);
-    transform: rotateY(90deg);
-  }
-
-  .ambient-3d__frame--one {
-    top: 16%;
-    right: 5%;
-    animation: ambient-frame-one 14s ease-in-out infinite alternate;
-  }
-
-  .ambient-3d__frame--two {
-    top: 58%;
-    left: 3%;
-    width: 6rem;
-    animation: ambient-frame-two 17s ease-in-out infinite alternate;
-  }
-
-  .ambient-3d__frame--three {
-    top: 42%;
-    right: 26%;
-    width: 4.5rem;
-    opacity: 0.7;
-    animation: ambient-frame-three 12s ease-in-out infinite alternate;
-  }
-
-  .ambient-3d__rain {
-    position: absolute;
-    inset: 0;
-    overflow: hidden;
-    transform-style: preserve-3d;
-  }
-
-  .ambient-3d__fragment {
-    position: absolute;
-    top: -12vh;
-    width: 4px;
-    height: 5rem;
-    background: rgb(166 33 21 / 0.68);
-    box-shadow:
-      0 0 8px rgb(166 33 21 / 0.35),
-      0 0 18px rgb(166 33 21 / 0.16);
-    transform-style: preserve-3d;
-    animation-name: ambient-red-fall;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-    will-change: transform, opacity;
-  }
-
-  .ambient-3d__fragment--square {
-    width: 1.1rem;
-    height: 1.1rem;
-    border: 2px solid rgb(166 33 21 / 0.72);
-    background: rgb(166 33 21 / 0.08);
+    top: -14rem;
+    left: var(--x);
+    width: var(--w);
+    height: var(--len);
+    border-radius: 9999px;
+    background: linear-gradient(to bottom, transparent, rgb(166 33 21 / 0.85));
+    opacity: var(--o);
+    animation: ambient-rain var(--d) linear var(--delay) infinite;
+    will-change: transform;
   }
 
   .login-corner-3d {
@@ -335,64 +285,21 @@
   }
 }
 
-@keyframes ambient-plane-drift {
-  from {
-    transform: rotateX(64deg) rotateZ(-18deg) translate3d(-1rem, 1rem, -80px);
-  }
-
-  to {
-    transform: rotateX(61deg) rotateZ(-14deg) translate3d(2rem, -1.5rem, -40px);
-  }
+@keyframes ambient-blob-one {
+  to { transform: translate(-9rem, 7rem) scale(1.18); }
 }
 
-@keyframes ambient-frame-one {
-  from {
-    transform: rotateX(58deg) rotateY(-22deg) rotateZ(8deg) translate3d(0, 0, -30px);
-  }
-
-  to {
-    transform: rotateX(72deg) rotateY(28deg) rotateZ(-8deg) translate3d(-1rem, 2rem, 50px);
-  }
+@keyframes ambient-blob-two {
+  to { transform: translate(10rem, -6rem) scale(1.12); }
 }
 
-@keyframes ambient-frame-two {
-  from {
-    transform: rotateX(-22deg) rotateY(52deg) rotateZ(-12deg) translate3d(0, 0, -60px);
-  }
-
-  to {
-    transform: rotateX(18deg) rotateY(72deg) rotateZ(8deg) translate3d(2rem, -2rem, 30px);
-  }
+@keyframes ambient-blob-three {
+  to { transform: translate(-7rem, 5rem) scale(0.85); }
 }
 
-@keyframes ambient-frame-three {
-  from {
-    transform: rotateX(42deg) rotateY(18deg) rotateZ(0) translate3d(0, 0, -80px);
-  }
-
-  to {
-    transform: rotateX(68deg) rotateY(-36deg) rotateZ(18deg) translate3d(-2rem, 1rem, 20px);
-  }
-}
-
-@keyframes ambient-red-fall {
-  0% {
-    opacity: 0;
-    transform: translate3d(0, -8vh, -90px) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
-  }
-
-  12% {
-    opacity: 1;
-  }
-
-  82% {
-    opacity: 0.85;
-  }
-
-  100% {
-    opacity: 0;
-    transform: translate3d(2.5rem, 120vh, 80px) rotateX(540deg) rotateY(280deg) rotateZ(180deg);
-  }
+@keyframes ambient-rain {
+  from { transform: rotate(12deg) translateY(0); }
+  to { transform: rotate(12deg) translateY(calc(100vh + 30rem)); }
 }
 
 @keyframes login-cube-turn {
@@ -458,27 +365,6 @@
 }
 
 @media (max-width: 639px) {
-  .ambient-3d__plane {
-    right: -25rem;
-    opacity: 0.24;
-  }
-
-  .ambient-3d__frame {
-    width: 5rem;
-  }
-
-  .ambient-3d__frame--two {
-    left: -1.5rem;
-  }
-
-  .ambient-3d__frame--three {
-    display: none;
-  }
-
-  .ambient-3d__fragment:nth-child(3n) {
-    display: none;
-  }
-
   .login-corner-3d {
     position: relative;
     top: auto;
@@ -617,7 +503,7 @@
 
   @media (hover: hover) {
     .step-row:hover {
-      background: rgb(255 255 255 / 0.6);
+      border-color: var(--color-line-strong);
     }
   }
 
@@ -701,5 +587,23 @@
   .sample-card,
   .sample-card__image {
     transition: none !important;
+  }
+}
+
+@media print {
+  @page {
+    margin: 14mm;
+  }
+
+  header.sticky,
+  .ambient-3d {
+    display: none !important;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 }
