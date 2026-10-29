@@ -132,18 +132,6 @@
       radial-gradient(circle at 1px 1px, rgb(39 38 42 / 0.06) 1px, transparent 0) 0 0 / 28px 28px;
   }
 
-  /* rain: thin red streaks falling fast on a slight diagonal */
-  .ambient-3d__drop {
-    position: absolute;
-    top: -14rem;
-    left: var(--x);
-    width: var(--w);
-    height: var(--len);
-    border-radius: 9999px;
-    background: linear-gradient(to bottom, transparent, rgb(166 33 21 / 0.85));
-    opacity: var(--o);
-    animation: ambient-rain var(--d) linear var(--delay) infinite;
-  }
 
   .login-corner-3d {
     position: absolute;
@@ -245,11 +233,6 @@
   to {
     opacity: 1;
   }
-}
-
-@keyframes ambient-rain {
-  from { transform: rotate(12deg) translateY(0); }
-  to { transform: rotate(12deg) translateY(calc(100vh + 30rem)); }
 }
 
 @keyframes login-cube-turn {
