@@ -7,7 +7,7 @@ import { Badge, Button, Container } from "@/components/ui";
 import { Reveal } from "@/components/motion/Reveal";
 import { InspectionReport } from "@/features/inspection-results/InspectionReport";
 import { InspectionResults } from "@/features/inspection-results/InspectionResults";
-import { defaultSample, findSampleById, findSampleByImage } from "@/features/inspection-results/samples";
+import { defaultSample, findSampleById, findSampleByImage, getSampleImages } from "@/features/inspection-results/samples";
 import { AppHeader } from "@/layouts/AppHeader";
 import { AppShell } from "@/layouts/AppShell";
 
@@ -31,6 +31,7 @@ export function AnalysisPage() {
   const sample = findSampleById(state?.sampleId) ?? findSampleByImage(state?.imageSrc) ?? defaultSample;
   const imageSrc = state?.imageSrc ?? sample.imageSrc;
   const fileName = state?.fileName ?? sample.fileName;
+  const images = imageSrc === sample.imageSrc ? getSampleImages(sample) : [{ src: imageSrc, alt: `Imagem analisada: ${fileName}`, label: "Foto enviada" }];
   const [verified, setVerified] = useState<ReadonlySet<number>>(new Set());
   const generatedAt = new Date().toLocaleString("pt-BR", { dateStyle: "long", timeStyle: "short" });
 
@@ -89,7 +90,7 @@ export function AnalysisPage() {
 
           <Reveal delay={70}>
             <section className="mt-6" aria-label="Pontos de atenção da inspeção">
-              <InspectionResults fileName={fileName} imageSrc={imageSrc} key={`${sample.id}-${imageSrc}`} onVerifiedChange={setVerified} points={sample.points} />
+              <InspectionResults fileName={fileName} images={images} key={`${sample.id}-${imageSrc}`} onVerifiedChange={setVerified} points={sample.points} />
             </section>
           </Reveal>
 
@@ -123,7 +124,7 @@ export function AnalysisPage() {
         </Container>
       </main>
       <Container className="print:py-0">
-        <InspectionReport fileName={fileName} generatedAt={generatedAt} imageSrc={imageSrc} sample={sample} verified={verified} />
+        <InspectionReport fileName={fileName} generatedAt={generatedAt} images={images} sample={sample} verified={verified} />
       </Container>
     </AppShell>
   );

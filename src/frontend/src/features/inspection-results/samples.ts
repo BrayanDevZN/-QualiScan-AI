@@ -1,5 +1,13 @@
+export type SampleImage = {
+  src: string;
+  alt: string;
+  label: string;
+};
+
 export type AttentionPoint = {
   id: number;
+  /** Index of the photo (in `images`) where this point is marked. Defaults to the first photo. */
+  image?: number;
   position: { left: string; top: string };
   title: string;
   severity: string;
@@ -19,6 +27,8 @@ export type InspectionSample = {
   material: string;
   imageSrc: string;
   imageAlt: string;
+  /** Extra photos of the same item. When present, the first one must match `imageSrc`. */
+  images?: SampleImage[];
   fileName: string;
   focus: string;
   description: string;
@@ -95,41 +105,80 @@ export const samples: InspectionSample[] = [
     id: "valvula-flange",
     code: "VF-204",
     date: "29 out. 2026 · 10:18",
-    material: "Válvula esfera 3/4\" flange/flange",
-    imageSrc: "/assets/images/valvula-flange.jpg",
-    imageAlt: "Duas válvulas de fechamento 3/4\" série 204 com flange, etiquetadas e protegidas com plástico bolha",
-    fileName: "valvula-flange.jpg",
-    focus: "Diâmetro dos furos, etiqueta e superfície do flange",
-    description: "Recebimento de válvulas de fechamento para transformador, com conferência do flange e da identificação.",
+    material: "Válvula esfera 2\" DN50 flange/flange",
+    imageSrc: "/assets/images/valvula-flange-geral.webp",
+    imageAlt: "Válvula esfera 2\" série 204 DIN DN50, com alavanca, etiqueta da OS e flange protegido com plástico bolha",
+    images: [
+      {
+        src: "/assets/images/valvula-flange-geral.webp",
+        alt: "Válvula esfera 2\" série 204 DIN DN50, com alavanca, etiqueta da OS e flange protegido com plástico bolha",
+        label: "Visão geral",
+      },
+      {
+        src: "/assets/images/valvula-flange-furos.png",
+        alt: "Face do flange da válvula vista de frente, com os 4 furos, o furo central e as linhas de medição centro a centro",
+        label: "Face do flange",
+      },
+    ],
+    fileName: "valvula-flange-geral.webp",
+    focus: "Diâmetro do flange, centro a centro e quantidade de furos",
+    description: "Recebimento de válvulas de fechamento para transformador, com conferência dimensional do flange e da identificação.",
     status: "Requer atenção",
     statusVariant: "attention",
     points: [
       {
         id: 1,
-        position: { left: "20.5%", top: "83%" },
-        title: "Diâmetro e distância dos furos",
+        image: 1,
+        position: { left: "50%", top: "10%" },
+        title: "Diâmetro do flange",
         severity: "Alta atenção",
         severityVariant: "attention",
-        summary: "Meça o diâmetro de cada furo do flange e a distância entre eles, comparando com o desenho da série 204 DIN.",
-        finding: "O furo do flange está parcialmente coberto pelo plástico bolha. Não dá para confirmar o diâmetro pela foto: retire a proteção e meça em mm.",
-        observations: ["Furos livres de rebarbas", "Circularidade e posição dos furos", "Mesmo padrão nos dois flanges"],
-        measurements: ["Diâmetro de cada furo (mm)", "Distância entre os furos (mm)", "Diâmetro externo do flange (mm)"],
+        summary: "Meça o diâmetro externo do flange, de borda a borda passando pelo centro, e compare com o desenho da série 204 DIN.",
+        observations: ["Flange circular, sem deformação nas bordas", "Mesmo diâmetro nos dois flanges (entrada e saída)", "Sem rebarbas ou amassados na borda"],
+        measurements: ["Diâmetro externo do flange (mm)"],
         pop: "POP-VF-003 · Dimensional de flanges",
       },
       {
         id: 2,
-        position: { left: "50%", top: "33%" },
-        title: "Etiqueta e identificação",
-        severity: "Atenção moderada",
-        severityVariant: "warning",
-        summary: "Compare o texto da etiqueta com a ordem de serviço: código, descrição, quantidade e finalidade.",
-        finding: "A etiqueta está parcialmente encoberta pela alavanca e pela fita: código, descrição e data aparecem cortados. A conferência com a OS fica incompleta.",
-        observations: ["Código e descrição conferem com a OS", "Quantidade da etiqueta (2 unidades)", "Código de barras legível e finalidade \"Fechamento - Trafo\""],
-        pop: "POP-VF-001 · Conferência de identificação",
+        image: 1,
+        position: { left: "44%", top: "34%" },
+        title: "Centro a centro dos furos",
+        severity: "Alta atenção",
+        severityVariant: "attention",
+        summary: "Meça do meio de um furo ao meio do furo oposto, na diagonal, como nas linhas marcadas na foto. As duas diagonais devem dar o mesmo valor.",
+        observations: ["Medir as duas diagonais (linha laranja e linha vermelha)", "As diagonais cruzam no centro do furo de passagem", "Furos igualmente espaçados em volta do centro"],
+        measurements: ["Centro a centro, diagonal 1 (mm)", "Centro a centro, diagonal 2 (mm)"],
+        pop: "POP-VF-003 · Dimensional de flanges",
       },
       {
         id: 3,
-        position: { left: "40%", top: "88%" },
+        image: 1,
+        position: { left: "80%", top: "52%" },
+        title: "Quantidade e diâmetro dos furos",
+        severity: "Alta atenção",
+        severityVariant: "attention",
+        summary: "Conte os furos de fixação do flange e meça o diâmetro de cada um. O padrão esperado é 4 furos de fixação, além do furo central de passagem.",
+        finding: "As fitas plásticas passam por dois furos e atrapalham a medição. Retire as fitas antes de medir o diâmetro de cada furo.",
+        observations: ["4 furos de fixação, mais o furo central", "Furos livres de rebarbas", "Mesma quantidade e mesmo padrão nos dois flanges"],
+        measurements: ["Diâmetro de cada furo de fixação (mm)", "Diâmetro do furo central (mm)"],
+        pop: "POP-VF-003 · Dimensional de flanges",
+      },
+      {
+        id: 4,
+        image: 0,
+        position: { left: "26%", top: "28%" },
+        title: "Etiqueta e identificação",
+        severity: "Atenção moderada",
+        severityVariant: "warning",
+        summary: "Compare o texto da etiqueta com a ordem de serviço: código, descrição, quantidade e fornecedor. Confira também a gravação no corpo (PN10-16, DN50, CF8).",
+        finding: "A quantidade escrita à mão na etiqueta está pouco legível. Confirme o valor com a OS.",
+        observations: ["Código 15754 e descrição conferem com a OS", "Quantidade da etiqueta legível e correta", "Gravação PN10-16, DN50 e CF8 no corpo da válvula"],
+        pop: "POP-VF-001 · Conferência de identificação",
+      },
+      {
+        id: 5,
+        image: 0,
+        position: { left: "50%", top: "78%" },
         title: "Superfície do flange",
         severity: "Atenção moderada",
         severityVariant: "warning",
@@ -138,8 +187,9 @@ export const samples: InspectionSample[] = [
         pop: "POP-VF-005 · Condição de superfícies",
       },
       {
-        id: 4,
-        position: { left: "25%", top: "30%" },
+        id: 6,
+        image: 0,
+        position: { left: "18%", top: "52%" },
         title: "Alavanca, haste e fixação",
         severity: "Verificação padrão",
         severityVariant: "success",
@@ -211,6 +261,10 @@ export const samples: InspectionSample[] = [
 ];
 
 export const defaultSample = samples[0];
+
+export function getSampleImages(sample: InspectionSample): SampleImage[] {
+  return sample.images ?? [{ src: sample.imageSrc, alt: sample.imageAlt, label: "Foto" }];
+}
 
 export function findSampleByImage(imageSrc?: string) {
   return samples.find((sample) => sample.imageSrc === imageSrc);
