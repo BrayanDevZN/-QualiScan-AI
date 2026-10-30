@@ -4,23 +4,29 @@ import { type SyntheticEvent, useEffect, useState } from "react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/shadcn/alert";
 import { Badge } from "@/components/shadcn/badge";
 import { Progress } from "@/components/shadcn/progress";
+import { Tabs, TabsList, TabsTrigger } from "@/components/shadcn/tabs";
 import { Button, Surface } from "@/components/ui";
 import { cn } from "@/lib/cn";
 
-import type { AttentionPoint } from "./samples";
+import type { AttentionPoint, SampleImage } from "./samples";
 
 type InspectionResultsProps = {
   fileName: string;
-  imageSrc: string;
+  images: SampleImage[];
   onVerifiedChange?: (verified: ReadonlySet<number>) => void;
   points: AttentionPoint[];
 };
 
-export function InspectionResults({ fileName, imageSrc, onVerifiedChange, points: attentionPoints }: InspectionResultsProps) {
+export function InspectionResults({ fileName, images, onVerifiedChange, points: attentionPoints }: InspectionResultsProps) {
   const [activeId, setActiveId] = useState(attentionPoints[0]?.id ?? 1);
   const [verified, setVerified] = useState<Set<number>>(new Set());
   const [completed, setCompleted] = useState(false);
   const [imageAspectRatio, setImageAspectRatio] = useState("4 / 3");
+  const [imageIndex, setImageIndex] = useState(0);
+  const image = images[imageIndex] ?? images[0];
+  const hasManyImages = images.length > 1;
+  const pointImage = (point: AttentionPoint) => Math.min(point.image ?? 0, images.length - 1);
+  const imagePoints = attentionPoints.filter((point) => pointImage(point) === imageIndex);
   const activePoint = attentionPoints.find((point) => point.id === activeId) ?? attentionPoints[0];
   const allVerified = verified.size === attentionPoints.length;
 
@@ -36,6 +42,13 @@ export function InspectionResults({ fileName, imageSrc, onVerifiedChange, points
       return next;
     });
     setCompleted(false);
+  }
+
+  function selectImage(value: string) {
+    const index = Number(value);
+    setImageIndex(index);
+    const firstPoint = attentionPoints.find((point) => pointImage(point) === index);
+    if (firstPoint) setActiveId(firstPoint.id);
   }
 
   function preserveImageRatio(event: SyntheticEvent<HTMLImageElement>) {
@@ -58,16 +71,28 @@ export function InspectionResults({ fileName, imageSrc, onVerifiedChange, points
       <Surface className="min-w-0 overflow-hidden">
         <div className="grid min-w-0 xl:grid-cols-[minmax(0,1fr)_23rem]">
           <div className="min-w-0 border-b border-line bg-[#252529] xl:border-b-0 xl:border-r">
+            {hasManyImages && (
+              <Tabs className="border-b border-white/10 p-3" onValueChange={selectImage} value={String(imageIndex)}>
+                <TabsList aria-label="Fotos da peça" className="h-auto w-full">
+                  {images.map((item, index) => (
+                    <TabsTrigger className="px-3 py-2 text-xs sm:text-sm" key={item.src} value={String(index)}>
+                      Foto {index + 1} · {item.label}
+                    </TabsTrigger>
+                  ))}
+                </TabsList>
+              </Tabs>
+            )}
             <div className="relative w-full" style={{ aspectRatio: imageAspectRatio }}>
               <img
-                alt={`Imagem analisada: ${fileName}`}
+                alt={hasManyImages ? image.alt : `Imagem analisada: ${fileName}`}
                 className="absolute inset-0 size-full object-contain"
+                key={image.src}
                 onLoad={preserveImageRatio}
-                src={imageSrc}
+                src={image.src}
               />
               <div aria-hidden className="absolute inset-0 bg-black/10" />
 
-              {attentionPoints.map((point) => (
+              {imagePoints.map((point) => (
                 <button
                   aria-label={`Ponto ${point.id}: ${point.title}`}
                   aria-pressed={activeId === point.id}

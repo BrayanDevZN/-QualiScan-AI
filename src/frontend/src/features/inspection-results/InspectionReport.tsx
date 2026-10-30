@@ -1,15 +1,15 @@
-import type { AttentionPoint, InspectionSample } from "./samples";
+import type { AttentionPoint, InspectionSample, SampleImage } from "./samples";
 
 type InspectionReportProps = {
   fileName: string;
   generatedAt: string;
-  imageSrc: string;
+  images: SampleImage[];
   sample: InspectionSample;
   verified: ReadonlySet<number>;
 };
 
 /** Print-only report: hidden on screen, it is the only thing shown when the page is printed or saved as PDF. */
-export function InspectionReport({ fileName, generatedAt, imageSrc, sample, verified }: InspectionReportProps) {
+export function InspectionReport({ fileName, generatedAt, images, sample, verified }: InspectionReportProps) {
   const withFinding = sample.points.filter((point) => point.finding).length;
 
   return (
@@ -42,18 +42,26 @@ export function InspectionReport({ fileName, generatedAt, imageSrc, sample, veri
         ))}
       </dl>
 
-      <div className="relative mt-6 break-inside-avoid overflow-hidden bg-[#252529]">
-        <img alt={`Imagem analisada: ${fileName}`} className="mx-auto block max-h-[22rem] w-auto object-contain" src={imageSrc} />
-        {sample.points.map((point) => (
-          <span
-            className="absolute grid size-7 -translate-x-1/2 -translate-y-1/2 place-items-center border-2 border-white bg-brand text-xs font-bold text-white"
-            key={point.id}
-            style={point.position}
-          >
-            {point.id}
-          </span>
-        ))}
-      </div>
+      {images.map((image, imageIndex) => (
+        <div className="mt-6 break-inside-avoid overflow-hidden bg-[#252529]" key={image.src}>
+          <div className="relative mx-auto w-fit">
+            <img
+              alt={images.length > 1 ? image.alt : `Imagem analisada: ${fileName}`}
+              className="block max-h-[22rem] w-auto object-contain"
+              src={image.src}
+            />
+            {sample.points.filter((point) => Math.min(point.image ?? 0, images.length - 1) === imageIndex).map((point) => (
+              <span
+                className="absolute grid size-7 -translate-x-1/2 -translate-y-1/2 place-items-center border-2 border-white bg-brand text-xs font-bold text-white"
+                key={point.id}
+                style={point.position}
+              >
+                {point.id}
+              </span>
+            ))}
+          </div>
+        </div>
+      ))}
 
       <h2 className="mt-8 text-lg font-bold">Pontos de atenção</h2>
       <ol className="mt-3 flex flex-col gap-4">
