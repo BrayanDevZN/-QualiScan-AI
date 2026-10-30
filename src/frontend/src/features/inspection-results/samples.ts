@@ -115,9 +115,14 @@ export const samples: InspectionSample[] = [
         label: "Visão geral",
       },
       {
-        src: "/assets/images/valvula-flange-furos.png",
-        alt: "Face do flange da válvula vista de frente, com os 4 furos, o furo central e as linhas de medição centro a centro",
+        src: "/assets/images/valvula-flange-furos.webp",
+        alt: "Face do flange da válvula vista de frente, com os 4 furos de fixação e o furo central",
         label: "Face do flange",
+      },
+      {
+        src: "/assets/images/valvula-flange-centro.png",
+        alt: "Face do flange da válvula com as linhas de medição centro a centro entre furos opostos",
+        label: "Centro a centro",
       },
     ],
     fileName: "valvula-flange-geral.webp",
@@ -129,7 +134,7 @@ export const samples: InspectionSample[] = [
       {
         id: 1,
         image: 1,
-        position: { left: "50%", top: "10%" },
+        position: { left: "45%", top: "31%" },
         title: "Diâmetro do flange",
         severity: "Alta atenção",
         severityVariant: "attention",
@@ -140,7 +145,7 @@ export const samples: InspectionSample[] = [
       },
       {
         id: 2,
-        image: 1,
+        image: 2,
         position: { left: "44%", top: "34%" },
         title: "Centro a centro dos furos",
         severity: "Alta atenção",
@@ -153,7 +158,7 @@ export const samples: InspectionSample[] = [
       {
         id: 3,
         image: 1,
-        position: { left: "80%", top: "52%" },
+        position: { left: "62%", top: "52%" },
         title: "Quantidade e diâmetro dos furos",
         severity: "Alta atenção",
         severityVariant: "attention",
