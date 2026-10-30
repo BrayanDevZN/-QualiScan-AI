@@ -52,7 +52,7 @@ O sistema é pensado como ferramenta de apoio. A decisão final continua pertenc
 - Login demonstrativo com validação local de formulário.
 - Página inicial responsiva com apresentação do produto.
 - Guia detalhado de utilização do QualiScan.
-- Foco em transformadores: três exemplos reais (transformador de potência, válvula com flange e placas de identificação), cada um com pontos de atenção e medidas em milímetros.
+- Foco em transformadores: exemplos reais (transformador de potência, válvula com flange em várias fotos e placas de identificação), cada um com pontos de atenção e medidas em milímetros.
 - Captura real de foto pela câmera do dispositivo.
 - Envio de arquivos JPG, PNG e WebP com limite de 10 MB.
 - Seleção e recorte de uma região da imagem com mouse ou toque.
