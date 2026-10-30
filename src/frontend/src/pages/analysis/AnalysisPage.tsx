@@ -5,6 +5,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Alert, AlertDescription } from "@/components/shadcn/alert";
 import { Badge, Button, Container } from "@/components/ui";
 import { Reveal } from "@/components/motion/Reveal";
+import type { Decision } from "@/features/inspection-results/decisions";
 import { InspectionReport } from "@/features/inspection-results/InspectionReport";
 import { InspectionResults } from "@/features/inspection-results/InspectionResults";
 import { defaultSample, findSampleById, findSampleByImage, getSampleImages } from "@/features/inspection-results/samples";
@@ -32,7 +33,7 @@ export function AnalysisPage() {
   const imageSrc = state?.imageSrc ?? sample.imageSrc;
   const fileName = state?.fileName ?? sample.fileName;
   const images = imageSrc === sample.imageSrc ? getSampleImages(sample) : [{ src: imageSrc, alt: `Imagem analisada: ${fileName}`, label: "Foto enviada" }];
-  const [verified, setVerified] = useState<ReadonlySet<number>>(new Set());
+  const [decisions, setDecisions] = useState<ReadonlyMap<number, Decision>>(new Map());
   const generatedAt = new Date().toLocaleString("pt-BR", { dateStyle: "long", timeStyle: "short" });
 
   return (
@@ -90,7 +91,7 @@ export function AnalysisPage() {
 
           <Reveal delay={70}>
             <section className="mt-6" aria-label="Pontos de atenção da inspeção">
-              <InspectionResults fileName={fileName} images={images} key={`${sample.id}-${imageSrc}`} onVerifiedChange={setVerified} points={sample.points} />
+              <InspectionResults fileName={fileName} images={images} key={`${sample.id}-${imageSrc}`} onDecisionsChange={setDecisions} points={sample.points} />
             </section>
           </Reveal>
 
@@ -124,7 +125,7 @@ export function AnalysisPage() {
         </Container>
       </main>
       <Container className="print:py-0">
-        <InspectionReport fileName={fileName} generatedAt={generatedAt} images={images} sample={sample} verified={verified} />
+        <InspectionReport fileName={fileName} generatedAt={generatedAt} images={images} sample={sample} decisions={decisions} />
       </Container>
     </AppShell>
   );

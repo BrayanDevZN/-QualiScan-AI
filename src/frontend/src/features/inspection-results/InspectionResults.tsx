@@ -1,25 +1,27 @@
-import { AlertTriangle, Check, CheckCircle2, ClipboardCheck, Eye, MapPin, Ruler } from "lucide-react";
+import { AlertTriangle, Check, CheckCircle2, ClipboardCheck, Clock, Eye, MapPin, Ruler, X } from "lucide-react";
 import { type SyntheticEvent, useEffect, useState } from "react";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/shadcn/alert";
 import { Badge } from "@/components/shadcn/badge";
 import { Progress } from "@/components/shadcn/progress";
 import { Tabs, TabsList, TabsTrigger } from "@/components/shadcn/tabs";
+import { ToggleGroup, ToggleGroupItem } from "@/components/shadcn/toggle-group";
 import { Button, Surface } from "@/components/ui";
 import { cn } from "@/lib/cn";
 
+import { countDecisions, type Decision, decisionLabels } from "./decisions";
 import type { AttentionPoint, SampleImage } from "./samples";
 
 type InspectionResultsProps = {
   fileName: string;
   images: SampleImage[];
-  onVerifiedChange?: (verified: ReadonlySet<number>) => void;
+  onDecisionsChange?: (decisions: ReadonlyMap<number, Decision>) => void;
   points: AttentionPoint[];
 };
 
-export function InspectionResults({ fileName, images, onVerifiedChange, points: attentionPoints }: InspectionResultsProps) {
+export function InspectionResults({ fileName, images, onDecisionsChange, points: attentionPoints }: InspectionResultsProps) {
   const [activeId, setActiveId] = useState(attentionPoints[0]?.id ?? 1);
-  const [verified, setVerified] = useState<Set<number>>(new Set());
+  const [decisions, setDecisions] = useState<Map<number, Decision>>(new Map());
   const [completed, setCompleted] = useState(false);
   const [imageAspectRatio, setImageAspectRatio] = useState("4 / 3");
   const [imageIndex, setImageIndex] = useState(0);
@@ -28,17 +30,18 @@ export function InspectionResults({ fileName, images, onVerifiedChange, points: 
   const pointImage = (point: AttentionPoint) => Math.min(point.image ?? 0, images.length - 1);
   const imagePoints = attentionPoints.filter((point) => pointImage(point) === imageIndex);
   const activePoint = attentionPoints.find((point) => point.id === activeId) ?? attentionPoints[0];
-  const allVerified = verified.size === attentionPoints.length;
+  const counts = countDecisions(decisions);
+  const allDecided = decisions.size === attentionPoints.length;
 
   useEffect(() => {
-    onVerifiedChange?.(verified);
-  }, [onVerifiedChange, verified]);
+    onDecisionsChange?.(decisions);
+  }, [onDecisionsChange, decisions]);
 
-  function toggleVerified(id: number) {
-    setVerified((current) => {
-      const next = new Set(current);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
+  function decide(id: number, decision: Decision | "") {
+    setDecisions((current) => {
+      const next = new Map(current);
+      if (decision) next.set(id, decision);
+      else next.delete(id);
       return next;
     });
     setCompleted(false);
@@ -64,7 +67,7 @@ export function InspectionResults({ fileName, images, onVerifiedChange, points: 
         <Alert className="animate-in-up" role="status" variant="success">
           <CheckCircle2 aria-hidden />
           <AlertTitle className="font-bold text-ink">Inspeção visual concluída</AlertTitle>
-          <AlertDescription className="text-ink-muted">Os {attentionPoints.length} pontos foram marcados como verificados nesta demonstração local.</AlertDescription>
+          <AlertDescription className="text-ink-muted">Os {attentionPoints.length} pontos foram avaliados nesta demonstração local. Aprovados: {counts.approved} · Em análise: {counts.analysis} · Reprovados: {counts.rejected}.</AlertDescription>
         </Alert>
       )}
 
@@ -97,16 +100,17 @@ export function InspectionResults({ fileName, images, onVerifiedChange, points: 
                   aria-label={`Ponto ${point.id}: ${point.title}`}
                   aria-pressed={activeId === point.id}
                   className={cn(
-                    "point-marker absolute grid size-10 -translate-x-1/2 -translate-y-1/2 place-items-center border-2 border-white bg-brand text-sm font-bold text-white shadow-[0_3px_12px_rgb(166_33_21/0.55)] focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-white",
+                    "point-marker absolute grid size-10 -translate-x-1/2 -translate-y-1/2 place-items-center border-2 border-white bg-caution text-sm font-bold text-ink shadow-[0_3px_12px_rgb(0_0_0/0.4)] focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-white",
                     activeId === point.id && "is-active border-[3px]",
-                    verified.has(point.id) && "bg-success",
+                    decisions.get(point.id) === "approved" && "bg-success text-white",
+                    decisions.get(point.id) === "rejected" && "bg-danger text-white",
                   )}
                   key={point.id}
                   onClick={() => setActiveId(point.id)}
                   style={point.position}
                   type="button"
                 >
-                  {verified.has(point.id) ? <Check aria-hidden className="size-5" /> : point.id}
+                  {decisions.get(point.id) === "approved" ? <Check aria-hidden className="size-5" /> : decisions.get(point.id) === "rejected" ? <X aria-hidden className="size-5" /> : point.id}
                 </button>
               ))}
 
@@ -176,14 +180,36 @@ export function InspectionResults({ fileName, images, onVerifiedChange, points: 
                 <ClipboardCheck aria-hidden className="mt-0.5 size-5 shrink-0 text-brand" />
                 <p className="min-w-0 break-words text-xs font-semibold leading-5 text-ink">{activePoint.pop}</p>
               </div>
-              <Button
-                className="mt-5 w-full px-3 text-xs sm:px-5 sm:text-sm"
-                icon={verified.has(activePoint.id) ? <CheckCircle2 aria-hidden className="size-4" /> : <Check aria-hidden className="size-4" />}
-                onClick={() => toggleVerified(activePoint.id)}
-                variant={verified.has(activePoint.id) ? "secondary" : "primary"}
+              <p className="mt-5 text-xs font-bold uppercase tracking-[0.12em] text-ink-subtle">Sua decisão</p>
+              <ToggleGroup
+                aria-label={`Decisão para o ponto ${activePoint.id}`}
+                className="mt-3 grid w-full grid-cols-3"
+                onValueChange={(value) => decide(activePoint.id, value as Decision | "")}
+                size="lg"
+                spacing={2}
+                type="single"
+                value={decisions.get(activePoint.id) ?? ""}
+                variant="outline"
               >
-                {verified.has(activePoint.id) ? "Ponto verificado" : "Marcar como verificado"}
-              </Button>
+                <ToggleGroupItem
+                  className="h-11 px-1 text-xs data-[state=off]:hover:bg-surface-overlay data-[state=off]:hover:text-ink data-[state=on]:border-success data-[state=on]:bg-success data-[state=on]:text-white data-[state=on]:hover:bg-success data-[state=on]:hover:text-white"
+                  value="approved"
+                >
+                  <Check data-icon="inline-start" /> {decisionLabels.approved}
+                </ToggleGroupItem>
+                <ToggleGroupItem
+                  className="h-11 px-1 text-xs data-[state=off]:hover:bg-surface-overlay data-[state=off]:hover:text-ink data-[state=on]:border-caution data-[state=on]:bg-caution data-[state=on]:text-ink data-[state=on]:hover:bg-caution data-[state=on]:hover:text-ink"
+                  value="analysis"
+                >
+                  <Clock data-icon="inline-start" /> Análise
+                </ToggleGroupItem>
+                <ToggleGroupItem
+                  className="h-11 px-1 text-xs data-[state=off]:hover:bg-surface-overlay data-[state=off]:hover:text-ink data-[state=on]:border-danger data-[state=on]:bg-danger data-[state=on]:text-white data-[state=on]:hover:bg-danger data-[state=on]:hover:text-white"
+                  value="rejected"
+                >
+                  <X data-icon="inline-start" /> {decisionLabels.rejected}
+                </ToggleGroupItem>
+              </ToggleGroup>
             </div>
           </aside>
         </div>
@@ -196,15 +222,15 @@ export function InspectionResults({ fileName, images, onVerifiedChange, points: 
               <AlertTriangle aria-hidden className="size-5 text-brand" />
               <p className="font-bold text-ink">Revisão do inspetor</p>
             </div>
-            <p className="mt-2 text-sm text-ink-muted">{verified.size} de {attentionPoints.length} pontos marcados como verificados. {attentionPoints.filter((point) => point.finding).length} com erro observado.</p>
+            <p className="mt-2 text-sm text-ink-muted">{decisions.size} de {attentionPoints.length} pontos avaliados. Aprovados: {counts.approved} · Em análise: {counts.analysis} · Reprovados: {counts.rejected}. {attentionPoints.filter((point) => point.finding).length} com erro observado.</p>
             <Progress
-              aria-label="Pontos verificados"
+              aria-label="Pontos avaliados"
               className="mt-4 w-full sm:w-72"
-              indicatorClassName={allVerified ? "bg-success" : undefined}
-              value={(verified.size / attentionPoints.length) * 100}
+              indicatorClassName={allDecided ? "bg-success" : undefined}
+              value={(decisions.size / attentionPoints.length) * 100}
             />
           </div>
-          <Button disabled={!allVerified || completed} onClick={() => setCompleted(true)}>
+          <Button disabled={!allDecided || completed} onClick={() => setCompleted(true)}>
             {completed ? "Inspeção concluída" : "Concluir inspeção"}
           </Button>
         </div>
