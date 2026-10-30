@@ -31,6 +31,7 @@
   --color-warning-ink: #8a5a00;
   --color-warning-wash: #fff5df;
   --color-warning-text: #6d4b08;
+  --color-caution: #f5b800;
 
   /* shadcn/ui semantic tokens, mapped onto the QualiScan palette above (no new colors). */
   --color-background: var(--color-canvas);
@@ -454,7 +455,7 @@
   .point-marker.is-active::after {
     position: absolute;
     inset: -2px;
-    border: 2px solid var(--color-brand);
+    border: 2px solid var(--color-surface);
     content: "";
     animation: marker-ping 1.8s ease-out infinite;
   }

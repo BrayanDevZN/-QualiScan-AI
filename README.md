@@ -58,7 +58,7 @@ O sistema é pensado como ferramenta de apoio. A decisão final continua pertenc
 - Seleção e recorte de uma região da imagem com mouse ou toque.
 - Pré-visualização e substituição da foto antes da análise.
 - Resultado simulado com pontos interativos sobre a imagem.
-- Checklist de regiões verificadas pelo inspetor.
+- Decisão do inspetor em cada ponto: aprovado (verde), em análise (amarelo) ou reprovado (vermelho).
 - Referências demonstrativas a POPs.
 - Histórico local de peças analisadas com busca por nome ou código.
 - Navegação responsiva e cabeçalho fixo.

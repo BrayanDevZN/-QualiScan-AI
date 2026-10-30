@@ -1,3 +1,4 @@
+import { countDecisions, type Decision, decisionLabels } from "./decisions";
 import type { AttentionPoint, InspectionSample, SampleImage } from "./samples";
 
 type InspectionReportProps = {
@@ -5,12 +6,13 @@ type InspectionReportProps = {
   generatedAt: string;
   images: SampleImage[];
   sample: InspectionSample;
-  verified: ReadonlySet<number>;
+  decisions: ReadonlyMap<number, Decision>;
 };
 
 /** Print-only report: hidden on screen, it is the only thing shown when the page is printed or saved as PDF. */
-export function InspectionReport({ fileName, generatedAt, images, sample, verified }: InspectionReportProps) {
+export function InspectionReport({ fileName, generatedAt, images, sample, decisions }: InspectionReportProps) {
   const withFinding = sample.points.filter((point) => point.finding).length;
+  const counts = countDecisions(decisions);
 
   return (
     <article aria-hidden className="report hidden text-ink print:block">
@@ -32,7 +34,8 @@ export function InspectionReport({ fileName, generatedAt, images, sample, verifi
           ["Código", sample.code],
           ["Data da inspeção", sample.date],
           ["Arquivo analisado", fileName],
-          ["Pontos verificados", `${verified.size} de ${sample.points.length}`],
+          ["Pontos avaliados", `${decisions.size} de ${sample.points.length}`],
+          ["Decisões", `Aprovados ${counts.approved} · Em análise ${counts.analysis} · Reprovados ${counts.rejected}`],
           ["Pontos com erro observado", String(withFinding)],
         ].map(([label, value]) => (
           <div key={label}>
@@ -66,7 +69,7 @@ export function InspectionReport({ fileName, generatedAt, images, sample, verifi
       <h2 className="mt-8 text-lg font-bold">Pontos de atenção</h2>
       <ol className="mt-3 flex flex-col gap-4">
         {sample.points.map((point) => (
-          <ReportPoint isVerified={verified.has(point.id)} key={point.id} point={point} />
+          <ReportPoint decision={decisions.get(point.id)} key={point.id} point={point} />
         ))}
       </ol>
 
@@ -78,7 +81,7 @@ export function InspectionReport({ fileName, generatedAt, images, sample, verifi
   );
 }
 
-function ReportPoint({ isVerified, point }: { isVerified: boolean; point: AttentionPoint }) {
+function ReportPoint({ decision, point }: { decision?: Decision; point: AttentionPoint }) {
   return (
     <li className="break-inside-avoid border border-line p-4">
       <div className="flex items-start justify-between gap-4">
@@ -86,7 +89,7 @@ function ReportPoint({ isVerified, point }: { isVerified: boolean; point: Attent
           {point.id}. {point.title}
         </h3>
         <p className="shrink-0 text-[0.65rem] font-bold uppercase tracking-[0.08em] text-brand">
-          {point.severity} · {isVerified ? "Verificado" : "Pendente"}
+          {point.severity} · {decision ? decisionLabels[decision] : "Pendente"}
         </p>
       </div>
       <p className="mt-2 text-xs leading-5 text-ink-muted">{point.summary}</p>
